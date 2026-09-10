@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary_electric">#F59E0B</color>
+    <color name="primary_electric_dark">#D97706</color>
+    <color name="background_slate">#0F172A</color>
+    <color name="surface_slate">#1E293B</color>
+    <color name="emerald_profit">#10B981</color>
+    <color name="cyan_route">#06B6D4</color>
+    <color name="coral_alert">#EF4444</color>
+    <color name="text_high_contrast">#FFFFFF</color>
+    <color name="text_muted">#94A3B8</color>
+</resources>

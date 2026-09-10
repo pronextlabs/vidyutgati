@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">विद्युतगति (VidyutGati)</string>
+    <string name="tagline">ई-रिक्शा सारथी का डिजिटल साथी</string>
+    
+    <!-- Navigation Tabs -->
+    <string name="tab_seats">सवारी (Seats)</string>
+    <string name="tab_soundbox">आवाज़ बॉक्स (Soundbox)</string>
+    <string name="tab_khata">दैनिक खाता (Khata)</string>
+    <string name="tab_battery">बैटरी (Battery)</string>
+    
+    <!-- Seat Cockpit -->
+    <string name="seat_cockpit_title">सवारी कॉकपिट (Live Seats)</string>
+    <string name="seats_available">सीटें खाली हैं</string>
+    <string name="seats_full">गाड़ी फुल हो गई!</string>
+    <string name="seat_one_left">केवल 1 सीट बाकी!</string>
+    <string name="board_passenger">+ सवारी बैठी</string>
+    <string name="deboard_passenger">- सवारी उतरी</string>
+    <string name="fixed_fare_label">प्रति सवारी किराया</string>
+    <string name="route_label">रूट (दिशा बदलें)</string>
+    
+    <!-- Soundbox -->
+    <string name="soundbox_title">आवाज़ बॉक्स (Voice Soundbox)</string>
+    <string name="soundbox_desc">बिना किसी मशीन के मुफ़्त यूपीआई आवाज़ सूचना</string>
+    <string name="recent_payments">हाल के भुगतान (Recent Payments)</string>
+    <string name="test_announcement">टेस्ट आवाज़ सुनें</string>
+    
+    <!-- Daily Khata -->
+    <string name="khata_title">रोज़ का हिसाब-किताब</string>
+    <string name="today_gross">कुल सवारी कमाई</string>
+    <string name="thekedar_bhatta">मालिक का भत्ता (किराया)</string>
+    <string name="charging_expense">बैटरी चार्जिंग / स्वैप</string>
+    <string name="other_expense">अन्य खर्चे (पंक्चर, चाय)</string>
+    <string name="net_profit">आज की जेब कमाई (शुद्ध बचत)</string>
+    <string name="share_whatsapp">व्हाट्सएप पर हिसाब भेजें</string>
+    
+    <!-- Battery Radar -->
+    <string name="battery_title">बैटरी व रेंज गाइड</string>
+    <string name="est_range">अनुमानित बची हुई दूरी</string>
+    <string name="battery_warning_low">⚠️ बैटरी कम है! पास के चार्जिंग स्टेशन जाएं।</string>
+    <string name="battery_healthy">✅ बैटरी स्तर सामान्य है</string>
+</resources>
