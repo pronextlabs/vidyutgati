@@ -39,11 +39,37 @@ import com.vidyutgati.ui.seatcockpit.SeatCockpitViewModel
 import com.vidyutgati.ui.soundbox.SoundboxScreen
 import com.vidyutgati.ui.soundbox.SoundboxViewModel
 
-enum class NavigationItem(val title: String, val icon: ImageVector) {
-    SEATS("सवारी", Icons.Default.DirectionsCar),
-    SOUNDBOX("आवाज़", Icons.Default.VolumeUp),
-    KHATA("खाता", Icons.Default.AccountBalanceWallet),
-    BATTERY("बैटरी", Icons.Default.BatteryChargingFull)
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.filled.Translate
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Surface
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import com.vidyutgati.core.designsystem.LanguageSelectorDialog
+import com.vidyutgati.core.i18n.AppLanguage
+import com.vidyutgati.core.i18n.LanguageManager
+
+enum class NavigationItem(val icon: ImageVector) {
+    SEATS(Icons.Default.DirectionsCar),
+    SOUNDBOX(Icons.Default.VolumeUp),
+    KHATA(Icons.Default.AccountBalanceWallet),
+    BATTERY(Icons.Default.BatteryChargingFull)
 }
 
 class MainActivity : ComponentActivity() {
@@ -68,6 +94,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
     seatCockpitViewModel: SeatCockpitViewModel,
@@ -75,30 +102,100 @@ fun MainScreen(
     dailyKhataViewModel: DailyKhataViewModel,
     batteryViewModel: BatteryViewModel
 ) {
+    val context = LocalContext.current
+    val haptic = LocalHapticFeedback.current
+    val languageManager = remember { LanguageManager.getInstance(context) }
+    val currentLanguage by languageManager.currentLanguage.collectAsState()
+    val strings by languageManager.strings.collectAsState()
+
     var selectedTab by remember { mutableStateOf(NavigationItem.SEATS) }
+    var showLanguageDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
+        topBar = {
+            TopAppBar(
+                title = {
+                    Column {
+                        Text(
+                            text = strings.appTitle,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Text(
+                            text = "100% Offline • INR (₹)",
+                            fontSize = 11.sp,
+                            color = ElectricAmber,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                },
+                actions = {
+                    Surface(
+                        modifier = Modifier
+                            .padding(end = 12.dp)
+                            .clip(RoundedCornerShape(20.dp))
+                            .clickable {
+                                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                                showLanguageDialog = true
+                            },
+                        color = ElectricAmber.copy(alpha = 0.15f),
+                        shape = RoundedCornerShape(20.dp),
+                        border = androidx.compose.foundation.BorderStroke(1.dp, ElectricAmber.copy(alpha = 0.4f))
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Text(text = currentLanguage.flag, fontSize = 14.sp)
+                            Text(
+                                text = currentLanguage.nativeName,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = ElectricAmber
+                            )
+                            Icon(
+                                imageVector = Icons.Default.Translate,
+                                contentDescription = "Switch Language",
+                                tint = ElectricAmber,
+                                modifier = Modifier.size(14.dp)
+                            )
+                        }
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                )
+            )
+        },
         bottomBar = {
             NavigationBar(
                 containerColor = MaterialTheme.colorScheme.surface,
                 contentColor = MaterialTheme.colorScheme.onSurface
             ) {
-                NavigationItem.values().forEach { tab ->
+                NavigationItem.entries.forEach { tab ->
                     val isSelected = selectedTab == tab
+                    val tabTitle = when (tab) {
+                        NavigationItem.SEATS -> strings.tabSeats
+                        NavigationItem.SOUNDBOX -> strings.tabSoundbox
+                        NavigationItem.KHATA -> strings.tabKhata
+                        NavigationItem.BATTERY -> strings.tabBattery
+                    }
                     NavigationBarItem(
                         selected = isSelected,
                         onClick = { selectedTab = tab },
                         icon = {
                             Icon(
                                 imageVector = tab.icon,
-                                contentDescription = tab.title,
+                                contentDescription = tabTitle,
                                 tint = if (isSelected) ElectricAmber else MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         },
                         label = {
                             Text(
-                                text = tab.title,
+                                text = tabTitle,
                                 fontSize = 12.sp,
                                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
                                 color = if (isSelected) ElectricAmber else MaterialTheme.colorScheme.onSurfaceVariant
@@ -131,5 +228,17 @@ fun MainScreen(
                 modifier = modifier
             )
         }
+    }
+
+    if (showLanguageDialog) {
+        LanguageSelectorDialog(
+            currentLanguage = currentLanguage,
+            onLanguageSelected = { newLang ->
+                languageManager.setLanguage(newLang)
+            },
+            onDismiss = {
+                showLanguageDialog = false
+            }
+        )
     }
 }

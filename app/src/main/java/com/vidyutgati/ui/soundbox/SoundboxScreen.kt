@@ -58,6 +58,8 @@ import androidx.compose.ui.unit.sp
 import com.vidyutgati.core.designsystem.CyanRoute
 import com.vidyutgati.core.designsystem.ElectricAmber
 import com.vidyutgati.core.designsystem.EmeraldProfit
+import com.vidyutgati.core.i18n.IndianCurrencyFormatter
+import com.vidyutgati.core.i18n.LanguageManager
 import com.vidyutgati.domain.model.PaymentApp
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -68,6 +70,10 @@ fun SoundboxScreen(
     viewModel: SoundboxViewModel,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+    val languageManager = remember { LanguageManager.getInstance(context) }
+    val strings by languageManager.strings.collectAsState()
+
     val selectedApp by viewModel.selectedApp.collectAsState()
     val recentPayments by viewModel.recentPayments.collectAsState()
     val lastAmount by viewModel.lastAnnouncedAmount.collectAsState()
@@ -111,14 +117,14 @@ fun SoundboxScreen(
                     Spacer(modifier = Modifier.height(10.dp))
 
                     Text(
-                        text = "मुफ़्त आवाज़ बॉक्स (Digital Soundbox)",
+                        text = strings.soundboxTitle,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface
                     )
 
                     Text(
-                        text = "बिना किसी डिवाइस किराये के 100% मुफ़्त",
+                        text = strings.soundboxSubtitle,
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -158,7 +164,7 @@ fun SoundboxScreen(
 
                     // Quick Tap Amounts to Announce
                     Text(
-                        text = "भुगतान आवाज़ ट्रिगर करें (Tap to Announce):",
+                        text = strings.tapToAnnounce,
                         fontSize = 13.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -185,7 +191,7 @@ fun SoundboxScreen(
                                 colors = ButtonDefaults.buttonColors(containerColor = EmeraldProfit)
                             ) {
                                 Text(
-                                    text = "₹${amount.toInt()}",
+                                    text = IndianCurrencyFormatter.formatInr(amount),
                                     fontSize = 18.sp,
                                     fontWeight = FontWeight.Black,
                                     color = Color.Black
@@ -213,7 +219,7 @@ fun SoundboxScreen(
                                 colors = ButtonDefaults.buttonColors(containerColor = CyanRoute)
                             ) {
                                 Text(
-                                    text = "₹${amount.toInt()}",
+                                    text = IndianCurrencyFormatter.formatInr(amount),
                                     fontSize = 18.sp,
                                     fontWeight = FontWeight.Black,
                                     color = Color.Black
@@ -241,7 +247,7 @@ fun SoundboxScreen(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "पिछली आवाज़ दुबारा सुनें (Repeat)",
+                            text = strings.repeatAnnouncement,
                             fontWeight = FontWeight.Bold,
                             color = ElectricAmber
                         )
@@ -252,7 +258,7 @@ fun SoundboxScreen(
 
         // 2. Automated Hands-Free Soundbox Activation Card
         item {
-            val context = LocalContext.current
+            val autoContext = LocalContext.current
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
@@ -278,7 +284,7 @@ fun SoundboxScreen(
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = "स्वचालित हैंड्स-फ्री आवाज़ (Auto UPI)",
+                                text = strings.autoSoundboxTitle,
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface
@@ -290,7 +296,7 @@ fun SoundboxScreen(
                             shape = RoundedCornerShape(8.dp)
                         ) {
                             Text(
-                                text = "स्मार्ट फीचर",
+                                text = "स्मार्ट",
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = CyanRoute,
@@ -302,7 +308,7 @@ fun SoundboxScreen(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
-                        text = "पेटीएम, फोनपे या गूगल पे से जब भी सवारी पैसे भेजेगी, ऐप बिना स्क्रीन छुए खुद ज़ोर से बोलकर बताएगा।",
+                        text = strings.autoSoundboxSubtitle,
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         lineHeight = 16.sp
@@ -314,7 +320,7 @@ fun SoundboxScreen(
                         onClick = {
                             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
-                            context.startActivity(intent)
+                            autoContext.startActivity(intent)
                         },
                         modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(containerColor = CyanRoute),
@@ -328,7 +334,7 @@ fun SoundboxScreen(
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
-                            text = "हैंड्स-फ्री ऑटो आवाज़ चालू करें (Enable Access)",
+                            text = strings.enableAutoSoundbox,
                             fontWeight = FontWeight.Bold,
                             color = Color.Black,
                             fontSize = 13.sp
@@ -369,7 +375,7 @@ fun SoundboxScreen(
 
                     Column {
                         Text(
-                            text = "सारथी यूपीआई आईडी (Driver UPI)",
+                            text = strings.driverUpiTitle,
                             fontSize = 12.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -392,7 +398,7 @@ fun SoundboxScreen(
         // 3. Recent Payment Logs Header
         item {
             Text(
-                text = "हाल के भुगतान (Payment History)",
+                text = strings.recentPayments,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
@@ -407,7 +413,7 @@ fun SoundboxScreen(
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     Text(
-                        text = "अभी कोई नया भुगतान नहीं है। ऊपर दिए गए बटनों से टेस्ट करें!",
+                        text = strings.noPaymentsYet,
                         fontSize = 13.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(16.dp)
@@ -445,7 +451,7 @@ fun SoundboxScreen(
 
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                text = "+₹${payment.amount.toInt()}",
+                                text = "+${IndianCurrencyFormatter.formatInr(payment.amount)}",
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Black,
                                 color = EmeraldProfit
@@ -473,10 +479,10 @@ fun SoundboxScreen(
     // Safe Delete Confirmation Dialog
     paymentToDelete?.let { payment ->
         SafeDeleteConfirmationDialog(
-            title = "पेमेंट रिकॉर्ड हटाएं? (Delete Entry)",
-            message = "क्या आप सच में ${payment.appSource} से प्राप्त ₹${payment.amount.toInt()} का यह रिकॉर्ड हटाना चाहते हैं? यह क्रिया वापस नहीं ली जा सकती।",
-            confirmButtonText = "हटाएं (Delete)",
-            dismissButtonText = "रद्द करें (Cancel)",
+            title = strings.deletePaymentPromptTitle,
+            message = strings.deletePaymentPromptMessage(payment.appSource, payment.amount.toInt()),
+            confirmButtonText = strings.deleteAction,
+            dismissButtonText = strings.cancelAction,
             onConfirm = {
                 viewModel.deletePayment(payment.id)
                 paymentToDelete = null

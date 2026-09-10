@@ -6,6 +6,7 @@ public struct SeatCockpitView: View {
     @State private var tripToDelete: TripItem? = nil
     @State private var showDeleteTripAlert: Bool = false
     @ObservedObject private var store = VidyutLocalStore.shared
+    @ObservedObject private var localization = LocalizationManager.shared
     @StateObject private var soundbox = IOSSoundboxEngine()
 
     private var statusColor: Color {
@@ -24,7 +25,7 @@ public struct SeatCockpitView: View {
                 // 1. Route Direction Banner
                 HStack {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("सक्रिय रूट (Active Route)")
+                        Text(localization.strings.activeRoute)
                             .font(.caption)
                             .foregroundColor(VidyutTheme.textMuted)
                         Text(state.currentRouteDisplay)
@@ -35,7 +36,7 @@ public struct SeatCockpitView: View {
                     Spacer()
                     Button(action: {
                         state.isForwardRoute.toggle()
-                        lastMessage = "रूट बदला: \(state.currentRouteDisplay)"
+                        lastMessage = "\(localization.strings.activeRoute): \(state.currentRouteDisplay)"
                     }) {
                         Image(systemName: "arrow.left.arrow.right")
                             .font(.system(size: 20, weight: .bold))
@@ -51,7 +52,7 @@ public struct SeatCockpitView: View {
 
                 // 2. Central Seat Gauge Card
                 VStack(spacing: 14) {
-                    Text(state.isFull ? "⚡ गाड़ी फुल है (FULL)" : (state.seatsRemaining == 1 ? "⚠️ केवल 1 सीट बाकी!" : "🟢 \(state.seatsRemaining) सीटें खाली हैं"))
+                    Text(state.isFull ? localization.strings.seatsFullBadge : (state.seatsRemaining == 1 ? localization.strings.oneSeatLeftBadge : localization.strings.seatsRemainingBadge(state.seatsRemaining)))
                         .font(.subheadline)
                         .fontWeight(.heavy)
                         .foregroundColor(statusColor)
@@ -70,7 +71,7 @@ public struct SeatCockpitView: View {
                             .padding(.bottom, 8)
                     }
 
-                    Text("सवारियां बैठी हैं (Passengers Onboard)")
+                    Text(localization.strings.passengersOnboard)
                         .font(.footnote)
                         .foregroundColor(VidyutTheme.textMuted)
 
@@ -92,9 +93,9 @@ public struct SeatCockpitView: View {
                     // Rush Hour Quick-Fill Button
                     Button(action: {
                         state.currentOccupancy = state.maxCapacity
-                        lastMessage = "⚡ पूरी गाड़ी फुल हो गई! (All \(state.maxCapacity) Seats Full)"
+                        lastMessage = "\(localization.strings.rushHourQuickFill) (\(state.maxCapacity))"
                     }) {
-                        Text("⚡ भीड़ समय: 1-टैप पूरी गाड़ी फुल (Fill All \(state.maxCapacity) Seats)")
+                        Text("\(localization.strings.rushHourQuickFill) (\(state.maxCapacity))")
                             .font(.footnote)
                             .fontWeight(.bold)
                             .foregroundColor(state.isFull ? VidyutTheme.textMuted : VidyutTheme.emeraldProfit)
@@ -118,13 +119,13 @@ public struct SeatCockpitView: View {
                     Button(action: {
                         if state.currentOccupancy > 0 {
                             state.currentOccupancy -= 1
-                            lastMessage = "सवारी उतरी (\(state.currentOccupancy)/\(state.maxCapacity))"
+                            lastMessage = "\(localization.strings.deboardPassenger) (\(state.currentOccupancy)/\(state.maxCapacity))"
                         }
                     }) {
                         HStack {
                             Image(systemName: "minus.circle.fill")
                                 .font(.title2)
-                            Text("सवारी उतरी")
+                            Text(localization.strings.deboardPassenger)
                                 .font(.headline)
                                 .fontWeight(.bold)
                         }
@@ -139,13 +140,13 @@ public struct SeatCockpitView: View {
                     Button(action: {
                         if state.currentOccupancy < state.maxCapacity {
                             state.currentOccupancy += 1
-                            lastMessage = "सवारी बैठी (\(state.currentOccupancy)/\(state.maxCapacity))"
+                            lastMessage = "\(localization.strings.boardPassenger) (\(state.currentOccupancy)/\(state.maxCapacity))"
                         }
                     }) {
                         HStack {
                             Image(systemName: "plus.circle.fill")
                                 .font(.title2)
-                            Text("+ सवारी बैठी")
+                            Text(localization.strings.boardPassenger)
                                 .font(.headline)
                                 .fontWeight(.heavy)
                         }
@@ -160,7 +161,7 @@ public struct SeatCockpitView: View {
 
                 // 4. Fare Per Seat Selector
                 HStack {
-                    Text("प्रति सवारी किराया:")
+                    Text(localization.strings.farePerSeat)
                         .font(.subheadline)
                         .fontWeight(.semibold)
                         .foregroundColor(.white)
@@ -170,9 +171,9 @@ public struct SeatCockpitView: View {
                             let isSelected = state.farePerSeat == fare
                             Button(action: {
                                 state.farePerSeat = fare
-                                lastMessage = "किराया: ₹\(Int(fare))/सवारी"
+                                lastMessage = "\(localization.strings.farePerSeat) \(IndianCurrencyFormatter.formatInr(fare))"
                             }) {
-                                Text("₹\(Int(fare))")
+                                Text(IndianCurrencyFormatter.formatInr(fare))
                                     .font(.subheadline)
                                     .fontWeight(isSelected ? .bold : .regular)
                                     .padding(.horizontal, 10)
@@ -189,7 +190,7 @@ public struct SeatCockpitView: View {
                 VStack(alignment: .leading, spacing: 10) {
                     let passengers = state.currentOccupancy > 0 ? state.currentOccupancy : state.maxCapacity
                     let totalFare = Double(passengers) * state.farePerSeat
-                    Text("ट्रिप समाप्त व किराया संग्रह (₹\(Int(totalFare)))")
+                    Text(localization.strings.tripCompleteTitle(Int(totalFare)))
                         .font(.subheadline)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
@@ -199,9 +200,9 @@ public struct SeatCockpitView: View {
                             store.addTrip(routeName: state.currentRouteDisplay, passengers: passengers, fare: totalFare, mode: .cash)
                             state.currentOccupancy = 0
                             state.isForwardRoute.toggle()
-                            lastMessage = "✅ ट्रिप पूरी: ₹\(Int(totalFare)) नकद जमा"
+                            lastMessage = "✅ \(localization.strings.cashPayment): \(IndianCurrencyFormatter.formatInr(totalFare))"
                         }) {
-                            Text("💵 नकद (Cash)")
+                            Text(localization.strings.cashPayment)
                                 .fontWeight(.bold)
                                 .foregroundColor(.black)
                                 .frame(maxWidth: .infinity)
@@ -216,9 +217,9 @@ public struct SeatCockpitView: View {
                             soundbox.announcePayment(amount: totalFare, appSource: .paytm)
                             state.currentOccupancy = 0
                             state.isForwardRoute.toggle()
-                            lastMessage = "✅ ट्रिप पूरी: ₹\(Int(totalFare)) यूपीआई प्राप्त"
+                            lastMessage = "✅ \(localization.strings.upiPayment): \(IndianCurrencyFormatter.formatInr(totalFare))"
                         }) {
-                            Text("📱 यूपीआई (UPI)")
+                            Text(localization.strings.upiPayment)
                                 .fontWeight(.bold)
                                 .foregroundColor(.black)
                                 .frame(maxWidth: .infinity)
@@ -234,13 +235,13 @@ public struct SeatCockpitView: View {
 
                 // 6. Recent Trips History with Safe Delete
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("हाल की ट्रिप (Recent Trips)")
+                    Text(localization.strings.recentTrips)
                         .font(.headline)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
 
                     if store.recentTrips.isEmpty {
-                        Text("आज अभी कोई ट्रिप दर्ज नहीं हुई है। ट्रिप पूरी होने पर यहाँ दिखेगी।")
+                        Text(localization.strings.noTripsYet)
                             .font(.footnote)
                             .foregroundColor(VidyutTheme.textMuted)
                             .padding()
@@ -255,12 +256,12 @@ public struct SeatCockpitView: View {
                                         .font(.subheadline)
                                         .fontWeight(.semibold)
                                         .foregroundColor(.white)
-                                    Text("\(trip.timestamp.formatted(date: .omitted, time: .shortened)) • \(trip.passengerCount) सवारियाँ • \(trip.paymentMode == .upi ? "📱 UPI" : "💵 नकद")")
+                                    Text("\(trip.timestamp.formatted(date: .omitted, time: .shortened)) • \(trip.passengerCount) \(localization.strings.passengersLabel) • \(trip.paymentMode == .upi ? localization.strings.upiPayment : localization.strings.cashPayment)")
                                         .font(.caption)
                                         .foregroundColor(VidyutTheme.textMuted)
                                 }
                                 Spacer()
-                                Text("+₹\(Int(trip.fareCollected))")
+                                Text("+\(IndianCurrencyFormatter.formatInr(trip.fareCollected))")
                                     .font(.subheadline)
                                     .fontWeight(.heavy)
                                     .foregroundColor(VidyutTheme.emeraldProfit)
@@ -291,16 +292,16 @@ public struct SeatCockpitView: View {
             .padding()
         }
         .background(VidyutTheme.deepObsidian.ignoresSafeArea())
-        .alert("ट्रिप हटाएं? (Delete Trip)", isPresented: $showDeleteTripAlert, presenting: tripToDelete) { trip in
-            Button("रद्द करें (Cancel)", role: .cancel) {
+        .alert(localization.strings.deleteTripPromptTitle, isPresented: $showDeleteTripAlert, presenting: tripToDelete) { trip in
+            Button(localization.strings.cancelAction, role: .cancel) {
                 tripToDelete = nil
             }
-            Button("हटाएं (Delete)", role: .destructive) {
+            Button(localization.strings.deleteAction, role: .destructive) {
                 store.deleteTrip(id: trip.id)
                 tripToDelete = nil
             }
         } message: { trip in
-            Text("क्या आप सच में यह ट्रिप (\(trip.routeName) - ₹\(Int(trip.fareCollected)), \(trip.passengerCount) सवारियां) हटाना चाहते हैं?\n\nआज के खाते से इसकी कमाई अपने आप घटा दी जाएगी (Rollback)। यह क्रिया वापस नहीं ली जा सकती।")
+            Text(localization.strings.deleteTripPromptMessage(trip.routeName, Int(trip.fareCollected), trip.passengerCount))
         }
     }
 }

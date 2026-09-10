@@ -2,6 +2,7 @@ import SwiftUI
 
 public struct DailyKhataView: View {
     @ObservedObject private var store = VidyutLocalStore.shared
+    @ObservedObject private var localization = LocalizationManager.shared
     @State private var showResetConfirmAlert: Bool = false
 
     private var netProfitColor: Color {
@@ -14,7 +15,7 @@ public struct DailyKhataView: View {
                 // Header
                 HStack {
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("दैनिक हिसाब (Daily Khata)")
+                        Text(localization.strings.dailyKhataTitle)
                             .font(.title3)
                             .fontWeight(.bold)
                             .foregroundColor(.white)
@@ -26,7 +27,7 @@ public struct DailyKhataView: View {
                     ShareLink(item: generateShareSummary()) {
                         HStack(spacing: 4) {
                             Image(systemName: "square.and.arrow.up")
-                            Text("शेयर करें")
+                            Text(localization.strings.shareWhatsAppButton)
                                 .fontWeight(.bold)
                         }
                         .font(.subheadline)
@@ -40,15 +41,15 @@ public struct DailyKhataView: View {
 
                 // Net Profit Hero Card
                 VStack(spacing: 12) {
-                    Text("आज की शुद्ध जेब कमाई (Net Profit)")
+                    Text(localization.strings.netProfitTitle)
                         .font(.subheadline)
                         .foregroundColor(VidyutTheme.textMuted)
 
-                    Text("₹\(Int(store.todayKhata.netProfit))")
+                    Text(IndianCurrencyFormatter.formatInr(store.todayKhata.netProfit))
                         .font(.system(size: 52, weight: .black))
                         .foregroundColor(netProfitColor)
 
-                    Text(store.todayKhata.isProfitable ? "✅ बचत खाते में लाभ" : "⚠️ अभी खर्चा बाकी है")
+                    Text(store.todayKhata.isProfitable ? localization.strings.profitBadge : localization.strings.lossBadge)
                         .font(.caption)
                         .fontWeight(.bold)
                         .foregroundColor(netProfitColor)
@@ -62,7 +63,7 @@ public struct DailyKhataView: View {
                     HStack {
                         Spacer()
                         VStack {
-                            Text("सवारियाँ")
+                            Text(localization.strings.passengersLabel)
                                 .font(.caption2)
                                 .foregroundColor(VidyutTheme.textMuted)
                             Text("\(store.todayKhata.totalPassengers)")
@@ -71,7 +72,7 @@ public struct DailyKhataView: View {
                         }
                         Spacer()
                         VStack {
-                            Text("चक्कर (Trips)")
+                            Text(localization.strings.tripsLabel)
                                 .font(.caption2)
                                 .foregroundColor(VidyutTheme.textMuted)
                             Text("\(store.todayKhata.totalTrips)")
@@ -88,7 +89,7 @@ public struct DailyKhataView: View {
                 // Itemized Breakdown Cards
                 // Gross Earnings
                 KhataItemCard(
-                    title: "कुल सवारी कमाई (Gross)",
+                    title: localization.strings.grossEarningsLabel,
                     amount: store.todayKhata.grossEarnings,
                     icon: "indianrupeesign.circle.fill",
                     iconColor: VidyutTheme.emeraldProfit,
@@ -104,7 +105,7 @@ public struct DailyKhataView: View {
                         .font(.title2)
                         .foregroundColor(VidyutTheme.coralAlert)
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("मालिक का किराया (ठेकेदार भत्ता)")
+                        Text(localization.strings.thekedarRentLabel)
                             .font(.subheadline)
                             .fontWeight(.semibold)
                             .foregroundColor(.white)
@@ -113,7 +114,7 @@ public struct DailyKhataView: View {
                             .foregroundColor(VidyutTheme.textMuted)
                     }
                     Spacer()
-                    Text("-₹\(Int(store.todayKhata.thekedarRent))")
+                    Text("-\(IndianCurrencyFormatter.formatInr(store.todayKhata.thekedarRent))")
                         .font(.headline)
                         .fontWeight(.bold)
                         .foregroundColor(VidyutTheme.coralAlert)
@@ -124,7 +125,7 @@ public struct DailyKhataView: View {
 
                 // Battery Charging Expense
                 KhataItemCard(
-                    title: "बैटरी चार्जिंग / स्वैप खर्च",
+                    title: localization.strings.chargingExpenseLabel,
                     amount: store.todayKhata.chargingExpense,
                     icon: "bolt.fill",
                     iconColor: VidyutTheme.electricAmber,
@@ -137,7 +138,7 @@ public struct DailyKhataView: View {
 
                 // Other Expenses
                 KhataItemCard(
-                    title: "अन्य खर्च (पंक्चर, चाय)",
+                    title: localization.strings.otherExpensesLabel,
                     amount: store.todayKhata.otherExpenses,
                     icon: "wrench.and.screwdriver.fill",
                     iconColor: VidyutTheme.cyanRoute,
@@ -153,7 +154,7 @@ public struct DailyKhataView: View {
                 }) {
                     HStack {
                         Image(systemName: "arrow.counterclockwise.circle")
-                        Text("आज का हिसाब रीसेट करें (Reset Today's Khata)")
+                        Text(localization.strings.resetKhataButton)
                             .fontWeight(.bold)
                     }
                     .font(.subheadline)
@@ -178,29 +179,29 @@ public struct DailyKhataView: View {
             .padding()
         }
         .background(VidyutTheme.deepObsidian.ignoresSafeArea())
-        .alert("आज का खाता रीसेट करें? (Reset Khata)", isPresented: $showResetConfirmAlert) {
-            Button("रद्द करें (Cancel)", role: .cancel) {}
-            Button("रीसेट करें (Reset)", role: .destructive) {
+        .alert(localization.strings.resetKhataPromptTitle, isPresented: $showResetConfirmAlert) {
+            Button(localization.strings.cancelAction, role: .cancel) {}
+            Button(localization.strings.deleteAction, role: .destructive) {
                 store.resetKhata()
             }
         } message: {
-            Text("क्या आप सच में आज का पूरा हिसाब रीसेट करना चाहते हैं? इससे आज की सभी दर्ज कमाई और खर्चे शून्य (₹0) हो जाएंगे। यह क्रिया वापस नहीं ली जा सकती।")
+            Text(localization.strings.resetKhataPromptMessage)
         }
     }
 
     private func generateShareSummary() -> String {
         let k = store.todayKhata
         return """
-🛺 *विद्युतगति सारथी दैनिक खाता*
+🛺 *\(localization.strings.appTitle) - \(localization.strings.dailyKhataTitle)*
 ━━━━━━━━━━━━━━━━━━
-💰 कुल कमाई: ₹\(Int(k.grossEarnings)) (\(k.totalPassengers) सवारियाँ / \(k.totalTrips) चक्कर)
-🏢 मालिक का भत्ता: -₹\(Int(k.thekedarRent))
-⚡ बैटरी चार्जिंग: -₹\(Int(k.chargingExpense))
-🔧 अन्य खर्चे: -₹\(Int(k.otherExpenses))
+💰 \(localization.strings.grossEarningsLabel): \(IndianCurrencyFormatter.formatInr(k.grossEarnings)) (\(k.totalPassengers) \(localization.strings.passengersLabel) / \(k.totalTrips) \(localization.strings.tripsLabel))
+🏢 \(localization.strings.thekedarRentLabel): -\(IndianCurrencyFormatter.formatInr(k.thekedarRent))
+⚡ \(localization.strings.chargingExpenseLabel): -\(IndianCurrencyFormatter.formatInr(k.chargingExpense))
+🔧 \(localization.strings.otherExpensesLabel): -\(IndianCurrencyFormatter.formatInr(k.otherExpenses))
 ━━━━━━━━━━━━━━━━━━
-✅ *आज की शुद्ध जेब कमाई: ₹\(Int(k.netProfit))*
+✅ *\(localization.strings.netProfitTitle): \(IndianCurrencyFormatter.formatInr(k.netProfit))*
 ━━━━━━━━━━━━━━━━━━
-_विद्युतगति ऐप द्वारा (ProNextLabs)_
+_ProNextLabs VidyutGati_
         """
     }
 }
@@ -227,7 +228,7 @@ struct KhataItemCard: View {
                     .fontWeight(.semibold)
                     .foregroundColor(.white)
                 Spacer()
-                Text("\(isExpense ? "-₹" : "₹")\(Int(amount))")
+                Text("\(isExpense ? "-" : "")\(IndianCurrencyFormatter.formatInr(amount))")
                     .font(.headline)
                     .fontWeight(.black)
                     .foregroundColor(isExpense ? VidyutTheme.coralAlert : VidyutTheme.emeraldProfit)

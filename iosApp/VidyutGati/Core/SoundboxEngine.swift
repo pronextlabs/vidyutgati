@@ -8,38 +8,35 @@ public final class IOSSoundboxEngine: NSObject, ObservableObject {
         super.init()
     }
 
-    public func convertAmountToHindiWords(_ amount: Int) -> String {
-        switch amount {
-        case 5: return "पांच"
-        case 10: return "दस"
-        case 15: return "पंद्रह"
-        case 20: return "बीस"
-        case 25: return "पच्चीस"
-        case 30: return "तीस"
-        case 35: return "पैंतीस"
-        case 40: return "चालीस"
-        case 50: return "पचास"
-        case 60: return "साठ"
-        case 70: return "सत्तर"
-        case 80: return "अस्सी"
-        case 90: return "नब्बे"
-        case 100: return "एक सौ"
-        case 150: return "एक सौ पचास"
-        case 200: return "दो सौ"
-        case 250: return "ढाई सौ"
-        case 300: return "तीन सौ"
-        case 500: return "पांच सौ"
-        default: return "\(amount)"
-        }
-    }
-
-    public func announcePayment(amount: Double, appSource: PaymentApp) {
+    public func announcePayment(amount: Double, appSource: PaymentApp, explicitLanguage: AppLanguage? = nil) {
+        let language = explicitLanguage ?? LocalizationManager.shared.currentLanguage
         let intAmount = Int(amount)
-        let hindiAmount = convertAmountToHindiWords(intAmount)
-        let text = "\(appSource.hindiName) पर \(hindiAmount) रुपये प्राप्त हुए।"
+        let amountWords = IndianCurrencyFormatter.getSpokenAmountWords(intAmount, language: language)
+
+        let text: String
+        switch language {
+        case .hindi:
+            text = "\(appSource.hindiName) पर \(amountWords) रुपये प्राप्त हुए।"
+        case .hinglish:
+            text = "\(appSource.rawValue) par \(amountWords) rupaye receive hue."
+        case .english:
+            text = "Received \(amountWords) rupees on \(appSource.rawValue)."
+        case .bengali:
+            text = "\(appSource.rawValue)-এ \(amountWords) টাকা পাওয়া গেছে।"
+        case .punjabi:
+            text = "\(appSource.rawValue) ਤੇ \(amountWords) ਰੁਪਏ ਪ੍ਰਾਪਤ ਹੋਏ।"
+        case .gujarati:
+            text = "\(appSource.rawValue) પર \(amountWords) રૂપિયા મળ્યા."
+        case .marathi:
+            text = "\(appSource.rawValue) वर \(amountWords) रुपये मिळाले."
+        case .tamil:
+            text = "\(appSource.rawValue)-இல் \(amountWords) ரூபாய் பெறப்பட்டது."
+        case .telugu:
+            text = "\(appSource.rawValue)-లో \(amountWords) రూపాయలు వచ్చాయి."
+        }
 
         let utterance = AVSpeechUtterance(string: text)
-        utterance.voice = AVSpeechSynthesisVoice(language: "hi-IN") ?? AVSpeechSynthesisVoice(language: "en-IN")
+        utterance.voice = AVSpeechSynthesisVoice(language: language.ttsLocale) ?? AVSpeechSynthesisVoice(language: "en-IN")
         utterance.rate = 0.48 // Slightly deliberate for loud vehicle environments
         utterance.pitchMultiplier = 1.0
         utterance.volume = 1.0
@@ -50,9 +47,11 @@ public final class IOSSoundboxEngine: NSObject, ObservableObject {
         synthesizer.speak(utterance)
     }
 
-    public func speakAlert(messageHindi: String) {
-        let utterance = AVSpeechUtterance(string: messageHindi)
-        utterance.voice = AVSpeechSynthesisVoice(language: "hi-IN") ?? AVSpeechSynthesisVoice(language: "en-IN")
+    public func speakAlert(messageHindi: String, messageEnglish: String = "") {
+        let currentLang = LocalizationManager.shared.currentLanguage
+        let text = (currentLang == .english && !messageEnglish.isEmpty) ? messageEnglish : messageHindi
+        let utterance = AVSpeechUtterance(string: text)
+        utterance.voice = AVSpeechSynthesisVoice(language: currentLang.ttsLocale) ?? AVSpeechSynthesisVoice(language: "en-IN")
         utterance.rate = 0.48
         synthesizer.speak(utterance)
     }

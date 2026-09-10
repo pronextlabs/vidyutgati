@@ -5,6 +5,7 @@ public struct BatteryView: View {
     @State private var voltage: Double = 52.5
     @State private var passengerLoad: Int = 2
     @StateObject private var soundbox = IOSSoundboxEngine()
+    @ObservedObject private var localization = LocalizationManager.shared
 
     private var status: BatteryHealthStatus {
         IOSBatteryRangeEstimator.evaluateHealth(voltage: voltage, chemistry: selectedChemistry, passengerCount: passengerLoad)
@@ -45,11 +46,11 @@ public struct BatteryView: View {
                             .padding(.bottom, 8)
                     }
 
-                    Text("अनुमानित बची हुई दूरी (Estimated Range)")
+                    Text(localization.strings.estRangeLabel)
                         .font(.footnote)
                         .foregroundColor(VidyutTheme.textMuted)
 
-                    Text("\(status.socPercentage)% चार्ज | \(String(format: "%.1f", voltage))V")
+                    Text("\(status.socPercentage)% चार्ज | \(String(format: "%.1f", voltage))V (\(localization.strings.sagFilterBadge))")
                         .font(.subheadline)
                         .fontWeight(.bold)
                         .foregroundColor(batteryColor)
@@ -67,8 +68,9 @@ public struct BatteryView: View {
 
                     // Voice Alert Button
                     Button(action: {
-                        let msg = "बैटरी \(status.socPercentage) प्रतिशत है। अनुमानित रेंज \(status.estimatedRangeKm) किलोमीटर बची है।"
-                        soundbox.speakAlert(messageHindi: msg)
+                        let hindiMsg = "बैटरी \(status.socPercentage) प्रतिशत है। अनुमानित रेंज \(status.estimatedRangeKm) किलोमीटर बची है।"
+                        let engMsg = "Battery is at \(status.socPercentage) percent. Estimated remaining range is \(status.estimatedRangeKm) kilometers."
+                        soundbox.speakAlert(messageHindi: hindiMsg, messageEnglish: engMsg)
                     }) {
                         HStack {
                             Image(systemName: "speaker.wave.2.fill")

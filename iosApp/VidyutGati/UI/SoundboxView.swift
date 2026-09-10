@@ -3,6 +3,7 @@ import SwiftUI
 public struct SoundboxView: View {
     @StateObject private var soundbox = IOSSoundboxEngine()
     @ObservedObject private var store = VidyutLocalStore.shared
+    @ObservedObject private var localization = LocalizationManager.shared
     @State private var selectedApp: PaymentApp = .paytm
     @State private var lastAmount: Double? = nil
 
@@ -25,12 +26,12 @@ public struct SoundboxView: View {
                             .foregroundColor(VidyutTheme.electricAmber)
                     }
 
-                    Text("मुफ़्त आवाज़ बॉक्स (Digital Soundbox)")
+                    Text(localization.strings.soundboxTitle)
                         .font(.headline)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
 
-                    Text("बिना किसी डिवाइस किराये के 100% मुफ़्त")
+                    Text(localization.strings.soundboxSubtitle)
                         .font(.caption)
                         .foregroundColor(VidyutTheme.textMuted)
 
@@ -55,7 +56,7 @@ public struct SoundboxView: View {
 
                     // Quick Tap Amounts
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("भुगतान आवाज़ ट्रिगर करें (Tap to Announce):")
+                        Text(localization.strings.tapToAnnounce)
                             .font(.caption)
                             .fontWeight(.semibold)
                             .foregroundColor(VidyutTheme.textMuted)
@@ -67,7 +68,7 @@ public struct SoundboxView: View {
                                     soundbox.announcePayment(amount: amt, appSource: selectedApp)
                                     store.addPayment(amount: amt, appSource: selectedApp)
                                 }) {
-                                    Text("₹\(Int(amt))")
+                                    Text(IndianCurrencyFormatter.formatInr(amt))
                                         .font(.title3)
                                         .fontWeight(.black)
                                         .foregroundColor(.black)
@@ -87,7 +88,7 @@ public struct SoundboxView: View {
                     }) {
                         HStack {
                             Image(systemName: "arrow.counterclockwise")
-                            Text("पिछली आवाज़ दुबारा सुनें (Repeat)")
+                            Text(localization.strings.repeatAnnouncement)
                         }
                         .font(.subheadline)
                         .fontWeight(.bold)
@@ -116,7 +117,7 @@ public struct SoundboxView: View {
                     }
 
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("सारथी यूपीआई आईडी (Driver UPI)")
+                        Text(localization.strings.driverUpiTitle)
                             .font(.caption)
                             .foregroundColor(VidyutTheme.textMuted)
                         Text("driver.vidyutgati@upi")
@@ -135,13 +136,13 @@ public struct SoundboxView: View {
 
                 // 3. Payment History
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("हाल के भुगतान (Payment History)")
+                    Text(localization.strings.recentPayments)
                         .font(.headline)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
 
                     if store.recentPayments.isEmpty {
-                        Text("अभी कोई नया भुगतान नहीं है। ऊपर दिए गए बटनों से टेस्ट करें!")
+                        Text(localization.strings.noPaymentsYet)
                             .font(.footnote)
                             .foregroundColor(VidyutTheme.textMuted)
                             .padding()
@@ -161,7 +162,7 @@ public struct SoundboxView: View {
                                         .foregroundColor(VidyutTheme.textMuted)
                                 }
                                 Spacer()
-                                Text("+₹\(Int(payment.amount))")
+                                Text("+\(IndianCurrencyFormatter.formatInr(payment.amount))")
                                     .font(.title3)
                                     .fontWeight(.black)
                                     .foregroundColor(VidyutTheme.emeraldProfit)
@@ -186,16 +187,16 @@ public struct SoundboxView: View {
             .padding()
         }
         .background(VidyutTheme.deepObsidian.ignoresSafeArea())
-        .alert("पेमेंट रिकॉर्ड हटाएं? (Delete Entry)", isPresented: $showDeleteConfirmAlert, presenting: paymentToDelete) { payment in
-            Button("रद्द करें (Cancel)", role: .cancel) {
+        .alert(localization.strings.deletePaymentPromptTitle, isPresented: $showDeleteConfirmAlert, presenting: paymentToDelete) { payment in
+            Button(localization.strings.cancelAction, role: .cancel) {
                 paymentToDelete = nil
             }
-            Button("हटाएं (Delete)", role: .destructive) {
+            Button(localization.strings.deleteAction, role: .destructive) {
                 store.deletePayment(id: payment.id)
                 paymentToDelete = nil
             }
         } message: { payment in
-            Text("क्या आप सच में \(payment.appSource.rawValue) से प्राप्त ₹\(Int(payment.amount)) का यह रिकॉर्ड हटाना चाहते हैं? यह क्रिया वापस नहीं ली जा सकती।")
+            Text(localization.strings.deletePaymentPromptMessage(payment.appSource.rawValue, Int(payment.amount)))
         }
     }
 }

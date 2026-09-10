@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.0] - 2026-09-10
+
+### Added
+- **Multi-Language Support Across 9 Languages (100% Offline)**:
+  - **Hinglish (`hi-Latn`)**: Conversational Latin-script Hindi colloquial phrasing ("Sawari Baithi", "Awaz Box", "Khata", "Gadi Full", "Per Seat Kiraya") tailored for modern smartphone habits.
+  - **Hindi (`hi`)**: Complete Devanagari translation ("सवारी", "आवाज़ बॉक्स", "दैनिक हिसाब", "बैटरी").
+  - **English (`en`)**: Clean standard terminology for pan-India and international usage.
+  - **Bengali (`bn`)**: Full support for West Bengal & Tripura Toto drivers (টোটো চালক, "যাত্রী", "সাউন্ডবক্স", "খাতা", "টাকা").
+  - **Punjabi (`pa`)**: Gurmukhi script support for Punjab & Delhi fleets (ਰਿਕਸ਼ਾ ਸਾਰਥੀ, "ਸਵਾਰੀ", "ਖਾਤਾ", "ਰੁਪਏ").
+  - **Gujarati (`gu`)**: Dedicated localization for Gujarat urban fleets ("પેસેન્જર", "સાઉન્ડબોક્સ", "ખાતાવહી", "રૂપિયા").
+  - **Marathi (`mr`)**: Dedicated localization for Maharashtra auto/e-rickshaw operators ("प्रवासी", "खातेवही", "फेऱ्या").
+  - **Tamil (`ta`)**: Full localization for Tamil Nadu last-mile transit ("பயணிகள்", "கணக்கு", "ரூபாய்").
+  - **Telugu (`te`)**: Full localization for Andhra Pradesh and Telangana ("ప్రయాణికులు", "ఖాతా", "రూపాయలు").
+- **Indian Rupee (INR - ₹) Currency Engine**:
+  - `IndianCurrencyFormatter`: Implements the standard Indian numbering system (`₹15`, `₹1,250`, `₹1,50,000` with lakh/crore commas).
+  - Multi-lingual spoken currency units (`রুপয়ে`, `rupaye`, `rupees`, `টাকা`, `ਰੁਪਏ`, `રૂપિયા`, `ரூபாய்`, `రూపాయలు`).
+- **Dynamic In-App Language Selector Dialog**:
+  - High-contrast modal dialog accessible directly from the Top App Bar (`🌐 [भाषा] ▾`).
+  - Instant live UI re-composition without restarting the application.
+  - Persistent preference backed by Android `SharedPreferences` and iOS `UserDefaults`.
+- **Dual-Native Voice Soundbox Regional Synthesis**:
+  - Speech synthesis engine adapts to active language on Android (`TextToSpeech`) and iOS (`AVSpeechSynthesizer`) with native voices (`hi-IN`, `bn-IN`, `pa-IN`, `gu-IN`, `mr-IN`, `ta-IN`, `te-IN`, `en-IN`).
+- **Unit Testing**:
+  - Added `LanguageAndCurrencyTest.kt` verifying currency grouping, spoken words, and complete string catalogs across all 9 languages.
+
+---
+
 ## [1.0.1] - 2026-09-10
 
 ### Added

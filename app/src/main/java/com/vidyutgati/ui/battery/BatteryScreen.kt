@@ -38,10 +38,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -50,6 +52,7 @@ import com.vidyutgati.core.designsystem.CoralAlert
 import com.vidyutgati.core.designsystem.CyanRoute
 import com.vidyutgati.core.designsystem.ElectricAmber
 import com.vidyutgati.core.designsystem.EmeraldProfit
+import com.vidyutgati.core.i18n.LanguageManager
 import com.vidyutgati.domain.model.BatteryChemistry
 
 @Composable
@@ -57,6 +60,10 @@ fun BatteryScreen(
     viewModel: BatteryViewModel,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+    val languageManager = remember { LanguageManager.getInstance(context) }
+    val strings by languageManager.strings.collectAsState()
+
     val chemistry by viewModel.selectedChemistry.collectAsState()
     val voltage by viewModel.currentVoltage.collectAsState()
     val smoothedVoltage by viewModel.smoothedVoltage.collectAsState()
@@ -126,7 +133,7 @@ fun BatteryScreen(
                     }
 
                     Text(
-                        text = "अनुमानित बची हुई दूरी (Estimated Range)",
+                        text = strings.estRangeLabel,
                         fontSize = 13.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -138,7 +145,7 @@ fun BatteryScreen(
                         shape = RoundedCornerShape(12.dp)
                     ) {
                         Text(
-                            text = "${status.socPercentage}% चार्ज | ${String.format("%.1f", smoothedVoltage)}V (सैग रक्षित)",
+                            text = "${status.socPercentage}% चार्ज | ${String.format("%.1f", smoothedVoltage)}V (${strings.sagFilterBadge})",
                             color = batteryColor,
                             fontWeight = FontWeight.Bold,
                             fontSize = 14.sp,

@@ -3,6 +3,9 @@ package com.vidyutgati.core.soundbox
 import android.content.Context
 import android.speech.tts.TextToSpeech
 import android.util.Log
+import com.vidyutgati.core.i18n.AppLanguage
+import com.vidyutgati.core.i18n.IndianCurrencyFormatter
+import com.vidyutgati.core.i18n.LanguageManager
 import com.vidyutgati.domain.model.PaymentApp
 import java.util.Locale
 
@@ -10,7 +13,7 @@ class SoundboxEngine(private val context: Context) : TextToSpeech.OnInitListener
 
     private var tts: TextToSpeech? = null
     private var isInitialized = false
-    private var isHindiSupported = false
+    private val languageManager = LanguageManager.getInstance(context)
 
     init {
         tts = TextToSpeech(context.applicationContext, this)
@@ -18,15 +21,7 @@ class SoundboxEngine(private val context: Context) : TextToSpeech.OnInitListener
 
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
-            val hindiLocale = Locale("hi", "IN")
-            val langResult = tts?.setLanguage(hindiLocale)
-            isHindiSupported = langResult != TextToSpeech.LANG_MISSING_DATA &&
-                    langResult != TextToSpeech.LANG_NOT_SUPPORTED
-
-            if (!isHindiSupported) {
-                // Fallback to English (India) or default
-                tts?.language = Locale("en", "IN")
-            }
+            applyLanguageVoice(languageManager.currentLanguage.value)
             tts?.setSpeechRate(0.95f) // Slightly slower for crisp intelligibility over traffic noise
             tts?.setPitch(1.0f)
             isInitialized = true
@@ -35,57 +30,55 @@ class SoundboxEngine(private val context: Context) : TextToSpeech.OnInitListener
         }
     }
 
-    /**
-     * Converts common Indian rupee denominations to natural spoken Hindi words.
-     */
-    fun convertAmountToHindiWords(amount: Int): String {
-        return when (amount) {
-            5 -> "पांच"
-            10 -> "दस"
-            15 -> "पंद्रह"
-            20 -> "बीस"
-            25 -> "पच्चीस"
-            30 -> "तीस"
-            35 -> "पैंतीस"
-            40 -> "चालीस"
-            50 -> "पचास"
-            60 -> "साठ"
-            70 -> "सत्तर"
-            80 -> "अस्सी"
-            90 -> "नब्बे"
-            100 -> "एक सौ"
-            150 -> "एक सौ पचास"
-            200 -> "दो सौ"
-            250 -> "ढाई सौ"
-            300 -> "तीन सौ"
-            500 -> "पांच सौ"
-            else -> amount.toString()
+    private fun applyLanguageVoice(language: AppLanguage) {
+        val targetLocale = language.locale
+        val result = tts?.setLanguage(targetLocale)
+        if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+            // Fallback to Hindi (India) or English (India)
+            val fallback = if (tts?.setLanguage(Locale("hi", "IN")) != TextToSpeech.LANG_NOT_SUPPORTED) {
+                Locale("hi", "IN")
+            } else {
+                Locale("en", "IN")
+            }
+            tts?.language = fallback
         }
     }
 
     /**
-     * Announces received payment loudly in authentic soundbox style.
+     * Announces received payment loudly in the driver's chosen language with INR currency.
      */
-    fun announcePayment(amount: Double, appSource: PaymentApp) {
+    fun announcePayment(amount: Double, appSource: PaymentApp, explicitLanguage: AppLanguage? = null) {
         if (!isInitialized) return
 
+        val language = explicitLanguage ?: languageManager.currentLanguage.value
+        applyLanguageVoice(language)
+
         val intAmount = amount.toInt()
-        val speechText = if (isHindiSupported) {
-            val hindiAmount = convertAmountToHindiWords(intAmount)
-            "${appSource.hindiName} पर $hindiAmount रुपये प्राप्त हुए।"
-        } else {
-            "Received $intAmount rupees on ${appSource.displayName}."
+        val amountWords = IndianCurrencyFormatter.getSpokenAmountWords(intAmount, language)
+
+        val speechText = when (language) {
+            AppLanguage.HINDI -> "${appSource.hindiName} पर $amountWords रुपये प्राप्त हुए।"
+            AppLanguage.HINGLISH -> "${appSource.displayName} par $amountWords rupaye receive hue."
+            AppLanguage.ENGLISH -> "Received $amountWords rupees on ${appSource.displayName}."
+            AppLanguage.BENGALI -> "${appSource.displayName}-এ $amountWords টাকা পাওয়া গেছে।"
+            AppLanguage.PUNJABI -> "${appSource.displayName} ਤੇ $amountWords ਰੁਪਏ ਪ੍ਰਾਪਤ ਹੋਏ।"
+            AppLanguage.GUJARATI -> "${appSource.displayName} પર $amountWords રૂપિયા મળ્યા."
+            AppLanguage.MARATHI -> "${appSource.displayName} वर $amountWords रुपये मिळाले."
+            AppLanguage.TAMIL -> "${appSource.displayName}-இல் $amountWords ரூபாய் பெறப்பட்டது."
+            AppLanguage.TELUGU -> "${appSource.displayName}-లో $amountWords రూపాయలు వచ్చాయి."
         }
 
         tts?.speak(speechText, TextToSpeech.QUEUE_FLUSH, null, "PAYMENT_ANNOUNCEMENT_${System.currentTimeMillis()}")
     }
 
     /**
-     * Announces a custom battery warning or system alert.
+     * Announces battery warning or system alert in the selected language.
      */
     fun speakAlert(messageHindi: String, messageEnglish: String) {
         if (!isInitialized) return
-        val text = if (isHindiSupported) messageHindi else messageEnglish
+        val currentLang = languageManager.currentLanguage.value
+        applyLanguageVoice(currentLang)
+        val text = if (currentLang == AppLanguage.ENGLISH) messageEnglish else messageHindi
         tts?.speak(text, TextToSpeech.QUEUE_ADD, null, "ALERT_${System.currentTimeMillis()}")
     }
 

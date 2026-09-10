@@ -53,15 +53,20 @@ import com.vidyutgati.core.designsystem.CyanRoute
 import com.vidyutgati.core.designsystem.ElectricAmber
 import com.vidyutgati.core.designsystem.EmeraldProfit
 import com.vidyutgati.core.designsystem.SafeDeleteConfirmationDialog
+import com.vidyutgati.core.i18n.IndianCurrencyFormatter
+import com.vidyutgati.core.i18n.LanguageManager
 
 @Composable
 fun DailyKhataScreen(
     viewModel: DailyKhataViewModel,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+    val languageManager = remember { LanguageManager.getInstance(context) }
+    val strings by languageManager.strings.collectAsState()
+
     val khata by viewModel.todayKhata.collectAsState()
     val weekly by viewModel.weeklySummary.collectAsState()
-    val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
     var showResetDialog by remember { mutableStateOf(false) }
 
@@ -82,7 +87,7 @@ fun DailyKhataScreen(
             ) {
                 Column {
                     Text(
-                        text = "दैनिक हिसाब (Daily Khata)",
+                        text = strings.dailyKhataTitle,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface
@@ -102,7 +107,7 @@ fun DailyKhataScreen(
                             putExtra(Intent.EXTRA_TEXT, viewModel.generateWhatsAppSummary())
                             type = "text/plain"
                         }
-                        context.startActivity(Intent.createChooser(sendIntent, "खाता शेयर करें"))
+                        context.startActivity(Intent.createChooser(sendIntent, strings.shareWhatsAppButton))
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = EmeraldProfit),
                     shape = RoundedCornerShape(12.dp)
@@ -115,7 +120,7 @@ fun DailyKhataScreen(
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
-                        text = "शेयर करें",
+                        text = strings.shareWhatsAppButton,
                         color = Color.Black,
                         fontWeight = FontWeight.Bold
                     )
@@ -138,7 +143,7 @@ fun DailyKhataScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "आज की शुद्ध जेब कमाई (Net Profit)",
+                        text = strings.netProfitTitle,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -147,7 +152,7 @@ fun DailyKhataScreen(
                     Spacer(modifier = Modifier.height(6.dp))
 
                     Text(
-                        text = "₹${khata.netProfit.toInt()}",
+                        text = IndianCurrencyFormatter.formatInr(khata.netProfit),
                         fontSize = 54.sp,
                         fontWeight = FontWeight.Black,
                         color = netProfitColor
@@ -158,7 +163,7 @@ fun DailyKhataScreen(
                         shape = RoundedCornerShape(12.dp)
                     ) {
                         Text(
-                            text = if (khata.isProfitable) "✅ बचत खाते में लाभ" else "⚠️ अभी खर्चा बाकी है",
+                            text = if (khata.isProfitable) strings.profitBadge else strings.lossBadge,
                             color = netProfitColor,
                             fontWeight = FontWeight.Bold,
                             fontSize = 12.sp,
@@ -173,11 +178,11 @@ fun DailyKhataScreen(
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(text = "सवारियाँ", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text(text = strings.passengersLabel, fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             Text(text = "${khata.totalPassengers}", fontSize = 16.sp, fontWeight = FontWeight.Bold)
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(text = "चक्कर (Trips)", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text(text = strings.tripsLabel, fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             Text(text = "${khata.totalTrips}", fontSize = 16.sp, fontWeight = FontWeight.Bold)
                         }
                     }
@@ -190,7 +195,7 @@ fun DailyKhataScreen(
         // A. Gross Earnings Card
         item {
             KhataBreakdownCard(
-                title = "कुल सवारी कमाई (Gross Earnings)",
+                title = strings.grossEarningsLabel,
                 amount = khata.grossEarnings,
                 icon = Icons.Default.CurrencyRupee,
                 iconColor = EmeraldProfit,
@@ -224,7 +229,7 @@ fun DailyKhataScreen(
                         Spacer(modifier = Modifier.width(10.dp))
                         Column {
                             Text(
-                                text = "मालिक का किराया (ठेकेदार भत्ता)",
+                                text = strings.thekedarRentLabel,
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.SemiBold,
                                 color = MaterialTheme.colorScheme.onSurface
@@ -238,7 +243,7 @@ fun DailyKhataScreen(
                     }
 
                     Text(
-                        text = "-₹${khata.thekedarRent.toInt()}",
+                        text = "-${IndianCurrencyFormatter.formatInr(khata.thekedarRent)}",
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = CoralAlert
@@ -250,7 +255,7 @@ fun DailyKhataScreen(
         // C. Battery Charging Expense Card
         item {
             KhataBreakdownCard(
-                title = "बैटरी चार्जिंग / स्वैप खर्च",
+                title = strings.chargingExpenseLabel,
                 amount = khata.chargingExpense,
                 icon = Icons.Default.Bolt,
                 iconColor = ElectricAmber,
@@ -265,7 +270,7 @@ fun DailyKhataScreen(
         // D. Other Expenses Card
         item {
             KhataBreakdownCard(
-                title = "अन्य खर्च (पंक्चर, चाय, जुर्माना)",
+                title = strings.otherExpensesLabel,
                 amount = khata.otherExpenses,
                 icon = Icons.Default.Handyman,
                 iconColor = CyanRoute,
@@ -290,7 +295,7 @@ fun DailyKhataScreen(
                         .padding(16.dp)
                 ) {
                     Text(
-                        text = "साप्ताहिक रिपोर्ट (7-Day Overview)",
+                        text = strings.weeklyOverviewTitle,
                         fontSize = 15.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface
@@ -310,15 +315,15 @@ fun DailyKhataScreen(
                     ) {
                         Column {
                             Text(text = "7-दिन कुल कमाई", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                            Text(text = "₹${weekly.totalGross.toInt()}", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = EmeraldProfit)
+                            Text(text = IndianCurrencyFormatter.formatInr(weekly.totalGross), fontSize = 16.sp, fontWeight = FontWeight.Bold, color = EmeraldProfit)
                         }
                         Column {
                             Text(text = "कुल दिया भत्ता", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                            Text(text = "-₹${weekly.totalBhattaPaid.toInt()}", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = CoralAlert)
+                            Text(text = "-${IndianCurrencyFormatter.formatInr(weekly.totalBhattaPaid)}", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = CoralAlert)
                         }
                         Column {
                             Text(text = "शुद्ध साप्ताहिक बचत", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                            Text(text = "₹${weekly.totalNetProfit.toInt()}", fontSize = 16.sp, fontWeight = FontWeight.Black, color = if (weekly.totalNetProfit >= 0) EmeraldProfit else CoralAlert)
+                            Text(text = IndianCurrencyFormatter.formatInr(weekly.totalNetProfit), fontSize = 16.sp, fontWeight = FontWeight.Black, color = if (weekly.totalNetProfit >= 0) EmeraldProfit else CoralAlert)
                         }
                     }
                 }
@@ -346,7 +351,7 @@ fun DailyKhataScreen(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "आज का हिसाब रीसेट करें (Reset Today's Khata)",
+                    text = strings.resetKhataButton,
                     color = CoralAlert,
                     fontWeight = FontWeight.Bold,
                     fontSize = 13.sp
@@ -371,10 +376,10 @@ fun DailyKhataScreen(
     // Safe Delete Confirmation Dialog for Khata Reset
     if (showResetDialog) {
         SafeDeleteConfirmationDialog(
-            title = "आज का खाता रीसेट करें? (Reset Khata)",
-            message = "क्या आप सच में आज का पूरा हिसाब रीसेट करना चाहते हैं? इससे आज की सभी दर्ज सवारी कमाई और खर्चे शून्य (₹0) हो जाएंगे। यह क्रिया वापस नहीं ली जा सकती।",
-            confirmButtonText = "रीसेट करें (Reset)",
-            dismissButtonText = "रद्द करें (Cancel)",
+            title = strings.resetKhataPromptTitle,
+            message = strings.resetKhataPromptMessage,
+            confirmButtonText = strings.deleteAction,
+            dismissButtonText = strings.cancelAction,
             onConfirm = {
                 viewModel.resetTodayKhata()
                 showResetDialog = false
@@ -431,7 +436,7 @@ fun KhataBreakdownCard(
                 }
 
                 Text(
-                    text = "${if (isExpense) "-₹" else "₹"}${amount.toInt()}",
+                    text = "${if (isExpense) "-" else ""}${IndianCurrencyFormatter.formatInr(amount)}",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Black,
                     color = if (isExpense) CoralAlert else EmeraldProfit

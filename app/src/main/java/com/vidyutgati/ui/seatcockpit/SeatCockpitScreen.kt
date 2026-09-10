@@ -67,11 +67,19 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+import androidx.compose.ui.platform.LocalContext
+import com.vidyutgati.core.i18n.LanguageManager
+import com.vidyutgati.core.i18n.IndianCurrencyFormatter
+
 @Composable
 fun SeatCockpitScreen(
     viewModel: SeatCockpitViewModel,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+    val languageManager = remember { LanguageManager.getInstance(context) }
+    val strings by languageManager.strings.collectAsState()
+
     val state by viewModel.seatState.collectAsState()
     val recentTrips by viewModel.recentTrips.collectAsState()
     val lastMessage by viewModel.lastActionMessage.collectAsState()
@@ -110,7 +118,7 @@ fun SeatCockpitScreen(
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "सक्रिय रूट (Active Route)",
+                        text = strings.activeRoute,
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontWeight = FontWeight.Medium
@@ -163,9 +171,9 @@ fun SeatCockpitScreen(
                 ) {
                     Text(
                         text = when {
-                            state.isFull -> "⚡ गाड़ी फुल है (FULL)"
-                            state.seatsRemaining == 1 -> "⚠️ केवल 1 सीट बाकी!"
-                            else -> "🟢 ${state.seatsRemaining} सीटें खाली हैं"
+                            state.isFull -> strings.seatsFullBadge
+                            state.seatsRemaining == 1 -> strings.oneSeatLeftBadge
+                            else -> strings.seatsRemainingBadge(state.seatsRemaining)
                         },
                         color = statusColor,
                         fontWeight = FontWeight.ExtraBold,
@@ -197,7 +205,7 @@ fun SeatCockpitScreen(
                 }
 
                 Text(
-                    text = "सवारियां बैठी हैं (Passengers Onboard)",
+                    text = strings.passengersOnboard,
                     fontSize = 13.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -247,7 +255,7 @@ fun SeatCockpitScreen(
                     enabled = !state.isFull
                 ) {
                     Text(
-                        text = "⚡ भीड़ समय: 1-टैप पूरी गाड़ी फुल (Fill All ${state.maxCapacity} Seats)",
+                        text = "${strings.rushHourQuickFill} (${state.maxCapacity})",
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
                         color = if (state.isFull) MaterialTheme.colorScheme.onSurfaceVariant else EmeraldProfit
@@ -283,7 +291,7 @@ fun SeatCockpitScreen(
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
-                        text = "सवारी उतरी",
+                        text = strings.deboardPassenger,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface
@@ -313,7 +321,7 @@ fun SeatCockpitScreen(
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
-                        text = "+ सवारी बैठी",
+                        text = strings.boardPassenger,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.ExtraBold,
                         color = Color.Black
@@ -329,7 +337,7 @@ fun SeatCockpitScreen(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "प्रति सवारी किराया:",
+                text = strings.farePerSeat,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurface
@@ -346,7 +354,7 @@ fun SeatCockpitScreen(
                         },
                         label = {
                             Text(
-                                text = "₹${fare.toInt()}",
+                                text = IndianCurrencyFormatter.formatInr(fare),
                                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
                             )
                         },
@@ -372,7 +380,7 @@ fun SeatCockpitScreen(
             ) {
                 val totalExpected = (if (state.currentOccupancy > 0) state.currentOccupancy else state.maxCapacity) * state.farePerSeat
                 Text(
-                    text = "ट्रिप समाप्त व किराया संग्रह (₹${totalExpected.toInt()})",
+                    text = strings.tripCompleteTitle(totalExpected.toInt()),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
@@ -394,7 +402,7 @@ fun SeatCockpitScreen(
                         shape = RoundedCornerShape(12.dp)
                     ) {
                         Text(
-                            text = "💵 नकद (Cash)",
+                            text = strings.cashPayment,
                             color = Color.Black,
                             fontWeight = FontWeight.Bold
                         )
@@ -412,7 +420,7 @@ fun SeatCockpitScreen(
                         shape = RoundedCornerShape(12.dp)
                     ) {
                         Text(
-                            text = "📱 यूपीआई (UPI)",
+                            text = strings.upiPayment,
                             color = Color.Black,
                             fontWeight = FontWeight.Bold
                         )
@@ -427,7 +435,7 @@ fun SeatCockpitScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = "हाल की ट्रिप (Recent Trips)",
+                text = strings.recentTrips,
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
@@ -440,7 +448,7 @@ fun SeatCockpitScreen(
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     Text(
-                        text = "आज अभी कोई ट्रिप दर्ज नहीं हुई है। ट्रिप पूरी होने पर यहाँ दिखेगी।",
+                        text = strings.noTripsYet,
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(14.dp)
@@ -469,7 +477,7 @@ fun SeatCockpitScreen(
                                 )
                                 val timeStr = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date(trip.timestampEpoch))
                                 Text(
-                                    text = "$timeStr • ${trip.passengerCount} सवारियाँ • ${if (trip.paymentMode == "UPI") "📱 UPI" else "💵 नकद"}",
+                                    text = "$timeStr • ${trip.passengerCount} ${strings.passengersLabel} • ${if (trip.paymentMode == "UPI") strings.upiPayment else strings.cashPayment}",
                                     fontSize = 11.sp,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -477,7 +485,7 @@ fun SeatCockpitScreen(
 
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Text(
-                                    text = "+₹${trip.fareCollected.toInt()}",
+                                    text = "+${IndianCurrencyFormatter.formatInr(trip.fareCollected)}",
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight.Black,
                                     color = EmeraldProfit
@@ -518,10 +526,10 @@ fun SeatCockpitScreen(
     // Safe Delete Confirmation Dialog for Trips (with automatic Khata rollback)
     tripToDelete?.let { trip ->
         SafeDeleteConfirmationDialog(
-            title = "ट्रिप हटाएं? (Delete Trip)",
-            message = "क्या आप सच में यह ट्रिप (${trip.routeName} - ₹${trip.fareCollected.toInt()}, ${trip.passengerCount} सवारियां) हटाना चाहते हैं?\n\nआज के खाते से इसकी कमाई अपने आप घटा दी जाएगी (Rollback)। यह क्रिया वापस नहीं ली जा सकती।",
-            confirmButtonText = "हटाएं (Delete)",
-            dismissButtonText = "रद्द करें (Cancel)",
+            title = strings.deleteTripPromptTitle,
+            message = strings.deleteTripPromptMessage(trip.routeName, trip.fareCollected.toInt(), trip.passengerCount),
+            confirmButtonText = strings.deleteAction,
+            dismissButtonText = strings.cancelAction,
             onConfirm = {
                 viewModel.deleteTrip(trip.id)
                 tripToDelete = null

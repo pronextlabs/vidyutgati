@@ -106,6 +106,21 @@ Electric Rickshaws form the backbone of last-mile feeder mobility across India a
   WHERE dateIso = :dateIso
   ```
 
+### 6. 🌐 9 Regional Languages & Indian Rupee (INR - ₹) Engine (100% Offline)
+* **Zero Network Translation Overhead**: All 9 language catalogs are embedded directly on-device with type-safe string catalogs.
+* **Languages Supported**:
+  1. **Hinglish (`hi-Latn`)**: Conversational Latin-script Hindi ("Sawari Baithi", "Awaz Box", "Khata", "Gadi Full") matching everyday phone usage.
+  2. **Hindi (`hi`)**: Devanagari script ("सवारी", "आवाज़", "खाता", "बैटरी").
+  3. **English (`en`)**: Clean standard terminology.
+  4. **Bengali (`bn`)**: West Bengal & Tripura Toto market (টোটো চালক, "যাত্রী", "সাউন্ডবক্স", "খাতা", "টাকা").
+  5. **Punjabi (`pa`)**: Gurmukhi script for Punjab & Delhi fleets (ਰਿਕਸ਼ਾ ਸਾਰਥੀ, "ਸਵਾਰੀ", "ਖਾਤਾ", "ਰੁਪਏ").
+  6. **Gujarati (`gu`)**: Gujarat urban fleets ("પેસેન્જર", "સાઉન્ડબોક્સ", "ખાતાવહી", "રૂપિયા").
+  7. **Marathi (`mr`)**: Maharashtra fleets ("प्रवासी", "खातेवही", "फेऱ्या").
+  8. **Tamil (`ta`)**: Tamil Nadu auto transit ("பயணிகள்", "கணக்கு", "ரூபாய்").
+  9. **Telugu (`te`)**: Andhra Pradesh and Telangana ("ప్రయాణికులు", "ఖాతా", "రూపాయలు").
+* **Indian Rupee (₹) Currency Standard**: All amounts formatted according to the Indian numbering system (`₹15`, `₹1,250`, `₹1,50,000` with lakh and crore grouping) and pronounced in natural words by the speech soundbox.
+* **Dynamic In-App Switcher**: Switch languages instantly on the fly via the top bar pill (`🌐 [Current] ▾`) without restarting the app.
+
 ---
 
 ## 🏗️ Technical Architecture & Dual-Native Parity
@@ -116,7 +131,9 @@ Electric Rickshaws form the backbone of last-mile feeder mobility across India a
 | **UI Framework** | Jetpack Compose + Material 3 | SwiftUI |
 | **Target SDK / OS** | **API 35 (Android 15)** / Min API 26 | iOS 16.0+ |
 | **Persistence** | Room SQLite Database + Coroutines Flow | ObservableObject Store + Codable |
-| **Voice Synthesis** | Android `TextToSpeech` (`hi-IN`) | iOS `AVSpeechSynthesizer` (`hi-IN`) |
+| **Voice Synthesis** | Android `TextToSpeech` (9 regional voices) | iOS `AVSpeechSynthesizer` (9 regional voices) |
+| **Languages** | **9 Languages** (Hinglish, Hindi, English, Bengali, Punjabi, Gujarati, Marathi, Tamil, Telugu) | **9 Languages** (Full Parity) |
+| **Currency** | **Indian Rupee (INR - ₹)** with Indian grouping | **Indian Rupee (INR - ₹)** with Indian grouping |
 | **Haptic Feedback** | Tactile `LocalHapticFeedback` | CoreHaptics / `UIImpactFeedback` |
 | **Internet Dependency** | **100% Offline-First (0 Network Calls)** | **100% Offline-First (0 Network Calls)** |
 | **Permissions** | Minimal (`VIBRATE`, `RECEIVE_BOOT_COMPLETED`) | None (Zero permissions required) |
