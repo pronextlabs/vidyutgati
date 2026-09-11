@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.3] - 2026-09-11
+
+### Fixed (Startup Crash / Launch Failure)
+- **Resolved Fatal `ClassNotFoundException` on App Startup**:
+  - **Root Cause**: In `AndroidManifest.xml`, the `<application>` and `<activity>` elements used relative dot syntax (`.VidyutGatiApp`, `.MainActivity`). Because the Gradle build script defined `namespace = "com.vidyutgati.app"`, AGP merged these into `com.vidyutgati.app.VidyutGatiApp` and `com.vidyutgati.app.MainActivity`. However, the compiled Kotlin bytecode resided in `package com.vidyutgati`. When users tapped the app icon on mobile, the Android runtime failed to load the class and crashed immediately on launch (`Unable to instantiate application / java.lang.ClassNotFoundException`).
+  - **Fix**: Replaced relative references in `AndroidManifest.xml` with fully-qualified class names (`com.vidyutgati.VidyutGatiApp` and `com.vidyutgati.MainActivity`), and aligned `namespace = "com.vidyutgati"` in `build.gradle.kts`.
+- **Defensive TTS Initialization**: Wrapped `TextToSpeech` initialization in a `try-catch` block within `SoundboxEngine` to guarantee zero startup crashes on custom Android ROMs without Google Speech Services.
+- **Added Regression Test Suite**: Created `ManifestClassIntegrityTest.kt` to ensure application and activity reflection integrity is verified on every build.
+
+---
+
 ## [1.1.2] - 2026-09-11
 
 ### Security & Privacy (Zero-Permission Architecture)

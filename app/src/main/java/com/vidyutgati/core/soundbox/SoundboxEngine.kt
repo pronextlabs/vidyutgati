@@ -16,7 +16,12 @@ class SoundboxEngine(private val context: Context) : TextToSpeech.OnInitListener
     private val languageManager = LanguageManager.getInstance(context)
 
     init {
-        tts = TextToSpeech(context.applicationContext, this)
+        tts = try {
+            TextToSpeech(context.applicationContext, this)
+        } catch (e: Throwable) {
+            Log.e("SoundboxEngine", "Failed to initialize TextToSpeech engine", e)
+            null
+        }
     }
 
     override fun onInit(status: Int) {

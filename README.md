@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="https://github.com/pronextlabs/vidyutgati/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/pronextlabs/vidyutgati/ci.yml?branch=main&style=flat-square&logo=github-actions&label=CI%20Build" alt="CI Status" /></a>
-  <a href="https://github.com/pronextlabs/vidyutgati/releases"><img src="https://img.shields.io/badge/Release-v1.1.2-F59E0B?style=flat-square&logo=github" alt="Release v1.1.2" /></a>
+  <a href="https://github.com/pronextlabs/vidyutgati/releases"><img src="https://img.shields.io/badge/Release-v1.1.3-F59E0B?style=flat-square&logo=github" alt="Release v1.1.3" /></a>
   <a href="https://developer.android.com/about/versions/15"><img src="https://img.shields.io/badge/Android-API%2035%20(Android%2015)-3DDC84?style=flat-square&logo=android" alt="Android 15" /></a>
   <a href="https://source.android.com/security/apksigning"><img src="https://img.shields.io/badge/Signed-v1%20%7C%20v2%20%7C%20v3-10B981?style=flat-square&logo=google-play" alt="Play Protect Signed" /></a>
   <a href="https://developer.apple.com/swift/"><img src="https://img.shields.io/badge/iOS-16.0%2B%20(Swift%205.9)-000000?style=flat-square&logo=apple" alt="iOS" /></a>
