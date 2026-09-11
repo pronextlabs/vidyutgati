@@ -10,10 +10,11 @@
 
 <p align="center">
   <a href="https://github.com/pronextlabs/vidyutgati/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/pronextlabs/vidyutgati/ci.yml?branch=main&style=flat-square&logo=github-actions&label=CI%20Build" alt="CI Status" /></a>
-  <a href="https://github.com/pronextlabs/vidyutgati/releases"><img src="https://img.shields.io/badge/Release-v1.1.1-F59E0B?style=flat-square&logo=github" alt="Release v1.1.1" /></a>
+  <a href="https://github.com/pronextlabs/vidyutgati/releases"><img src="https://img.shields.io/badge/Release-v1.1.2-F59E0B?style=flat-square&logo=github" alt="Release v1.1.2" /></a>
   <a href="https://developer.android.com/about/versions/15"><img src="https://img.shields.io/badge/Android-API%2035%20(Android%2015)-3DDC84?style=flat-square&logo=android" alt="Android 15" /></a>
   <a href="https://source.android.com/security/apksigning"><img src="https://img.shields.io/badge/Signed-v1%20%7C%20v2%20%7C%20v3-10B981?style=flat-square&logo=google-play" alt="Play Protect Signed" /></a>
   <a href="https://developer.apple.com/swift/"><img src="https://img.shields.io/badge/iOS-16.0%2B%20(Swift%205.9)-000000?style=flat-square&logo=apple" alt="iOS" /></a>
+  <a href="#-zero-cloud-telemetry"><img src="https://img.shields.io/badge/Permissions-Zero%20Dangerous%20Perms-10B981?style=flat-square" alt="Zero Dangerous Permissions" /></a>
   <a href="#-zero-cloud-telemetry"><img src="https://img.shields.io/badge/Data%20Privacy-100%25%20Offline%20First-10B981?style=flat-square" alt="Offline First" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License" /></a>
 </p>
@@ -24,7 +25,7 @@
 
 **E-Rickshaw Sarathi** (codenamed *VidyutGati*) is an open-source initiative researched, designed, and developed by **[ProNextLabs](https://github.com/pronextlabs)**. 
 
-Our mission with E-Rickshaw Sarathi is to deliver high-craft, hardware-eliminating software tailored directly to grassroots informal transit workers (*Sarathis*), eliminating monthly IoT rental fees, battery anxiety, and manual bookkeeping friction with zero telemetry or cloud lock-in.
+Our mission with E-Rickshaw Sarathi is to deliver high-craft, hardware-eliminating software tailored directly to grassroots informal transit workers (*Sarathis*), eliminating monthly IoT rental fees, battery anxiety, and manual bookkeeping friction with zero telemetry, zero privacy-invasive permissions, or cloud lock-in.
 
 ---
 
@@ -47,9 +48,9 @@ Electric Rickshaws form the backbone of last-mile feeder mobility across India a
 │                        VIDYUTGATI ARCHITECTURE                         │
 ├───────────────────┬────────────────────┬───────────────────────────────┤
 │   SEAT COCKPIT    │   AWAZ SOUNDBOX    │          DAILY KHATA          │
-│  72dp Touch Grid  │  Bilingual Hindi   │   Gross Earnings - Bhatta     │
-│   Capacity State  │  Automatic UPI     │   - Charging = Net Profit     │
-│  1-Tap Route Flip │  Soundbox Listener │   1-Tap WhatsApp Summary      │
+│  72dp Touch Grid  │  100% Privacy-Safe │   Gross Earnings - Bhatta     │
+│   Capacity State  │  Zero Permissions  │   - Charging = Net Profit     │
+│  1-Tap Route Flip │  Custom TTS Voice  │   1-Tap WhatsApp Summary      │
 ├───────────────────┴────────────────────┴───────────────────────────────┤
 │                     BATTERY & RANGE ESTIMATOR                          │
 │     Physics OCV Curve  •  Voltage Sag EMA Filter  •  Swap Directory    │
@@ -69,14 +70,15 @@ Electric Rickshaws form the backbone of last-mile feeder mobility across India a
 * **Rush-Hour 1-Tap Shortcut**: Fills all remaining capacity with a single tap during peak office rushes.
 * **Recent Trip History with Rollback**: Displays recent trips with route, passenger count, fare, and payment badge.
 
-### 2. 📢 Free Digital Voice Soundbox (मुफ़्त आवाज़ बॉक्स)
+### 2. 📢 Free Digital Voice Soundbox (मुफ़्त आवाज़ बॉक्स — 100% सुरक्षित)
 * **Zero Monthly Hardware Rentals**: Completely eliminates physical IoT soundbox rental charges.
-* **Natural Hindi TTS Synthesis**: Native localized currency pronunciation via `TextToSpeech` (Android) and `AVSpeechSynthesizer` (iOS):
-  * *"पेटीएम पर पंद्रह रुपये प्राप्त हुए"*
-  * *"फोनपे पर बीस रुपये प्राप्त हुए"*
-  * *"गूगल पे पर पचास रुपये प्राप्त हुए"*
-* **Automated Hands-Free Notification Interceptor**: Uses Android `NotificationListenerService` to detect incoming UPI payment alerts from **Paytm**, **PhonePe**, **Google Pay**, and **BHIM**, announcing them automatically without touching the screen.
-* **Smart Filter**: Safely rejects debit alerts, bank balances, bill payments, and promotional cashback messages.
+* **100% Privacy & Zero Invasive Permissions**: Requires **NO notification interception, NO SMS access, and NO device permissions**. Seamlessly installs on any Android device without Google Play Protect or Restricted Settings warnings.
+* **Natural Hindi & Regional TTS Synthesis**: Native localized currency pronunciation via `TextToSpeech` (Android) and `AVSpeechSynthesizer` (iOS):
+  * *"पेटीएम पर 15 रुपये प्राप्त हुए"*
+  * *"फोनपे पर 20 रुपये प्राप्त हुए"*
+  * *"गूगल पे पर 50 रुपये प्राप्त हुए"*
+* **1-Tap Quick Fare Buttons**: Instant 72dp tiles for standard fares (₹10, ₹15, ₹20, ₹30, ₹50) that trigger loud voice announcement and record to Daily Khata with one touch.
+* **Custom Fare Announcer**: Numeric keypad input to pronounce any fare amount (e.g., ₹25, ₹45, ₹70, ₹120) loudly in the driver's chosen regional language.
 * **Embedded Driver UPI QR**: Displays driver VPA and scannable QR card directly on device.
 
 ### 3. 📒 Roz Ka Bhatta & Khata (दैनिक हिसाब-किताब)
@@ -137,7 +139,7 @@ Electric Rickshaws form the backbone of last-mile feeder mobility across India a
 | **Currency** | **Indian Rupee (INR - ₹)** with Indian grouping | **Indian Rupee (INR - ₹)** with Indian grouping |
 | **Haptic Feedback** | Tactile `LocalHapticFeedback` | CoreHaptics / `UIImpactFeedback` |
 | **Internet Dependency** | **100% Offline-First (0 Network Calls)** | **100% Offline-First (0 Network Calls)** |
-| **Permissions** | Minimal (`VIBRATE`, `RECEIVE_BOOT_COMPLETED`) | None (Zero permissions required) |
+| **Permissions** | Zero Sensitive Permissions (Only standard `VIBRATE` for road haptics) | None (Zero permissions required) |
 
 ---
 

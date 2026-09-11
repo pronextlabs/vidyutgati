@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.2] - 2026-09-11
+
+### Security & Privacy (Zero-Permission Architecture)
+- **Eliminated All High-Risk Permission Warnings & Play Protect Blocks**:
+  - **Removed `NotificationListenerService` (`BIND_NOTIFICATION_LISTENER_SERVICE`)**: Android 13, 14, and 15 actively flag sideloaded apps containing notification listeners with alarming red warnings (*"High-risk permission: This app can read all notifications, including personal messages and SMS OTPs"* / *"Restricted Setting"*).
+  - The application now requires **Zero Sensitive Permissions** (`provides-component: 'notification-listener'` completely eradicated). Only standard normal tactile feedback (`android.permission.VIBRATE`) remains.
+- **Added Custom Fare Soundbox Pad & Privacy Shield**:
+  - Replaced the notification listener setup card in `SoundboxScreen` with a dedicated **100% Privacy Shield & Custom Fare Announce Pad**.
+  - Drivers can now announce any custom rider fare (e.g. ₹12, ₹25, ₹35, ₹70) on tap via offline TTS, eliminating the need for invasive background notification snooping.
+  - Transparent in-app guarantee across all 9 languages assuring drivers that their personal SMS, banking OTPs, and private messages are never accessed.
+
+---
+
 ## [1.1.1] - 2026-09-11
 
 ### Fixed & Hardened (Play Protect & Sideload Installation)

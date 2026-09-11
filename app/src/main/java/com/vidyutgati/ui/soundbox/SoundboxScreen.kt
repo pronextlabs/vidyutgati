@@ -19,12 +19,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import android.content.Intent
 import android.provider.Settings
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.DeleteOutline
-import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material.icons.filled.QrCode2
 import androidx.compose.material.icons.filled.Replay
+import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -79,6 +80,7 @@ fun SoundboxScreen(
     val lastAmount by viewModel.lastAnnouncedAmount.collectAsState()
     val haptic = LocalHapticFeedback.current
     var paymentToDelete by remember { mutableStateOf<PaymentNotificationEntity?>(null) }
+    var customAmountText by remember { mutableStateOf("") }
 
     LazyColumn(
         modifier = modifier
@@ -256,14 +258,13 @@ fun SoundboxScreen(
             }
         }
 
-        // 2. Automated Hands-Free Soundbox Activation Card
+        // 2. 100% Privacy Shield & Custom Fare Keypad Card
         item {
-            val autoContext = LocalContext.current
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 shape = RoundedCornerShape(16.dp),
-                border = androidx.compose.foundation.BorderStroke(1.5.dp, CyanRoute.copy(alpha = 0.5f))
+                border = androidx.compose.foundation.BorderStroke(1.5.dp, EmeraldProfit.copy(alpha = 0.5f))
             ) {
                 Column(
                     modifier = Modifier
@@ -277,10 +278,10 @@ fun SoundboxScreen(
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
-                                imageVector = Icons.Default.NotificationsActive,
-                                contentDescription = "Auto Soundbox",
-                                tint = CyanRoute,
-                                modifier = Modifier.size(26.dp)
+                                imageVector = Icons.Default.Shield,
+                                contentDescription = "Safe",
+                                tint = EmeraldProfit,
+                                modifier = Modifier.size(24.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
@@ -292,14 +293,14 @@ fun SoundboxScreen(
                         }
 
                         Surface(
-                            color = CyanRoute.copy(alpha = 0.15f),
+                            color = EmeraldProfit.copy(alpha = 0.15f),
                             shape = RoundedCornerShape(8.dp)
                         ) {
                             Text(
-                                text = "स्मार्ट",
+                                text = "100% सुरक्षित",
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = CyanRoute,
+                                color = EmeraldProfit,
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
                             )
                         }
@@ -314,31 +315,56 @@ fun SoundboxScreen(
                         lineHeight = 16.sp
                     )
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(14.dp))
 
-                    Button(
-                        onClick = {
-                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                            val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
-                            autoContext.startActivity(intent)
-                        },
+                    // Custom Fare Input & Speak Button
+                    Row(
                         modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(containerColor = CyanRoute),
-                        shape = RoundedCornerShape(10.dp)
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.AutoAwesome,
-                            contentDescription = "Enable",
-                            tint = Color.Black,
-                            modifier = Modifier.size(18.dp)
+                        androidx.compose.material3.OutlinedTextField(
+                            value = customAmountText,
+                            onValueChange = { input ->
+                                if (input.all { it.isDigit() } && input.length <= 5) {
+                                    customAmountText = input
+                                }
+                            },
+                            placeholder = { Text("किराया ₹ (e.g. 25)", fontSize = 13.sp) },
+                            singleLine = true,
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            shape = RoundedCornerShape(12.dp),
+                            modifier = Modifier.weight(1f)
                         )
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text(
-                            text = strings.enableAutoSoundbox,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Black,
-                            fontSize = 13.sp
-                        )
+
+                        Button(
+                            onClick = {
+                                val amount = customAmountText.toDoubleOrNull()
+                                if (amount != null && amount > 0) {
+                                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                                    viewModel.triggerPaymentAnnouncement(amount)
+                                    customAmountText = ""
+                                }
+                            },
+                            enabled = customAmountText.isNotBlank(),
+                            colors = ButtonDefaults.buttonColors(containerColor = EmeraldProfit),
+                            shape = RoundedCornerShape(12.dp),
+                            modifier = Modifier.height(54.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.VolumeUp,
+                                contentDescription = "Announce",
+                                tint = Color.Black,
+                                modifier = Modifier.size(18.dp)
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                text = strings.enableAutoSoundbox,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.Black,
+                                fontSize = 13.sp
+                            )
+                        }
                     }
                 }
             }

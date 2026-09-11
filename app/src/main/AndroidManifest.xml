@@ -25,18 +25,6 @@
             </intent-filter>
         </activity>
 
-        <!-- Automated Hands-Free Voice Soundbox Service -->
-        <service
-            android:name=".core.soundbox.UpiSoundboxNotificationListener"
-            android:label="@string/soundbox_service_name"
-            android:description="@string/soundbox_service_desc"
-            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.service.notification.NotificationListenerService" />
-            </intent-filter>
-        </service>
-
     </application>
 
 </manifest>
