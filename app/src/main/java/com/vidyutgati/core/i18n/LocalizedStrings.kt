@@ -77,7 +77,7 @@ object LocalizedStrings {
     }
 
     private val hindiStrings = UiStrings(
-        appTitle = "विद्युतगति (VidyutGati)",
+        appTitle = "ई-रिक्शा सारथी (E-Rickshaw Sarathi)",
         tabSeats = "सवारी",
         tabSoundbox = "आवाज़",
         tabKhata = "खाता",
@@ -137,7 +137,7 @@ object LocalizedStrings {
     )
 
     private val hinglishStrings = UiStrings(
-        appTitle = "VidyutGati",
+        appTitle = "E-Rickshaw Sarathi",
         tabSeats = "Sawari",
         tabSoundbox = "Awaz Box",
         tabKhata = "Khata",
@@ -197,7 +197,7 @@ object LocalizedStrings {
     )
 
     private val englishStrings = UiStrings(
-        appTitle = "VidyutGati",
+        appTitle = "E-Rickshaw Sarathi",
         tabSeats = "Seats",
         tabSoundbox = "Soundbox",
         tabKhata = "Ledger",
@@ -257,7 +257,7 @@ object LocalizedStrings {
     )
 
     private val bengaliStrings = UiStrings(
-        appTitle = "বিদ্যুৎগতি (VidyutGati)",
+        appTitle = "টোটো সারথি (Toto Sarathi)",
         tabSeats = "যাত্রী",
         tabSoundbox = "সাউন্ডবক্স",
         tabKhata = "খাতা",
@@ -317,7 +317,7 @@ object LocalizedStrings {
     )
 
     private val punjabiStrings = UiStrings(
-        appTitle = "ਵਿਦਯੁਤਗਤੀ (VidyutGati)",
+        appTitle = "ਈ-ਰਿਕਸ਼ਾ ਸਾਰਥੀ (E-Rickshaw Sarathi)",
         tabSeats = "ਸਵਾਰੀ",
         tabSoundbox = "ਆਵਾਜ਼",
         tabKhata = "ਖਾਤਾ",
@@ -377,7 +377,7 @@ object LocalizedStrings {
     )
 
     private val gujaratiStrings = UiStrings(
-        appTitle = "વિદ્યુતગતિ (VidyutGati)",
+        appTitle = "ઈ-રિક્ષા સારથી (E-Rickshaw Sarathi)",
         tabSeats = "મુસાફર",
         tabSoundbox = "અવાજ બોક્સ",
         tabKhata = "ખાતું",
@@ -437,7 +437,7 @@ object LocalizedStrings {
     )
 
     private val marathiStrings = UiStrings(
-        appTitle = "विद्युतगती (VidyutGati)",
+        appTitle = "ई-रिक्षा सारथी (E-Rickshaw Sarathi)",
         tabSeats = "प्रवासी",
         tabSoundbox = "आवाज बॉक्स",
         tabKhata = "खाते",
@@ -497,7 +497,7 @@ object LocalizedStrings {
     )
 
     private val tamilStrings = UiStrings(
-        appTitle = "வித்யுத்கதி (VidyutGati)",
+        appTitle = "இ-ரிக்ஷா சாரதி (E-Rickshaw Sarathi)",
         tabSeats = "பயணிகள்",
         tabSoundbox = "சவுண்ட்பாக்ஸ்",
         tabKhata = "கணக்கு",
@@ -557,7 +557,7 @@ object LocalizedStrings {
     )
 
     private val teluguStrings = UiStrings(
-        appTitle = "విద్యుత్‌గతి (VidyutGati)",
+        appTitle = "ఇ-రిక్షా సారథి (E-Rickshaw Sarathi)",
         tabSeats = "ప్రయాణీకులు",
         tabSoundbox = "సౌండ్‌బాక్స్",
         tabKhata = "ఖాతా",

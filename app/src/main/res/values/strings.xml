@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">विद्युतगति (VidyutGati)</string>
+    <string name="app_name">E-Rickshaw Sarathi</string>
     <string name="tagline">ई-रिक्शा सारथी का डिजिटल साथी</string>
+    <string name="soundbox_service_name">ई-रिक्शा सारथी आवाज़ बॉक्स</string>
+    <string name="soundbox_service_desc">ई-रिक्शा चालकों के लिए हैंड्स-फ्री यूपीआई आवाज़ सूचना सेवा (Paytm, PhonePe, GPay)</string>
     
     <!-- Navigation Tabs -->
     <string name="tab_seats">सवारी (Seats)</string>

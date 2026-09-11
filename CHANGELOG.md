@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.1] - 2026-09-11
+
+### Fixed & Hardened (Play Protect & Sideload Installation)
+- **Resolved Google Play Protect Security Warnings & Installation Failures**:
+  - **Production Signing with Multi-Scheme Validation (v1 + v2 + v3)**: Replaced debug keystore (`CN=Android Debug`) with dedicated production release keystore (`CN=E-Rickshaw Sarathi, OU=Green Transit Mobility, O=ProNextLabs, L=New Delhi, ST=Delhi, C=IN`). Simultaneous v1 (JAR), v2, and v3 digital signatures resolve package parsing failures on MIUI, ColorOS, FuntouchOS, and older Android versions.
+  - **Disabled Debuggable Flag**: Non-debuggable release build (`isDebuggable = false`) removes the `application-debuggable` flag flagged by Android 14+ / Google Play Protect.
+  - **Custom High-Craft Adaptive Launcher Icons**: Replaced empty icon stub (`icon=''`) with vector adaptive launcher icons (`mipmap-anydpi-v26/ic_launcher.xml` & `ic_launcher_round.xml`) and full raster density fallbacks (`mdpi`, `hdpi`, `xhdpi`, `xxhdpi`, `xxxhdpi`), resolving Play Protect heuristic red flags.
+  - **Manifest Hardening**: Set `android:allowBackup="false"` to prevent unauthorized local SQLite khata extraction, declared `android:usesCleartextTraffic="false"`, and added clear user/system descriptions (`android:description`) to `UpiSoundboxNotificationListener`.
+
+### Changed & Rebranded
+- **Purpose-Built App Renaming to "E-Rickshaw Sarathi"**:
+  - Renamed the app to **E-Rickshaw Sarathi (ई-रिक्शा सारथी)** to make its utility for informal transit operators immediately recognizable.
+  - Region-tailored branding across all 9 languages:
+    - Hindi: **ई-रिक्शा सारथी (E-Rickshaw Sarathi)**
+    - Bengali / Toto: **টোটো সারথি (Toto Sarathi)**
+    - Punjabi: **ਈ-ਰਿਕਸ਼ਾ ਸਾਰਥੀ (E-Rickshaw Sarathi)**
+    - Gujarati: **ઈ-રિક્ષા સારથી (E-Rickshaw Sarathi)**
+    - Marathi: **ई-रिक्षा सारथी (E-Rickshaw Sarathi)**
+    - Tamil: **இ-ரிக்ஷா சாரதி (E-Rickshaw Sarathi)**
+    - Telugu: **ఇ-రిక్షా సారథి (E-Rickshaw Sarathi)**
+    - Hinglish / English: **E-Rickshaw Sarathi**
+
+---
+
 ## [1.1.0] - 2026-09-10
 
 ### Added

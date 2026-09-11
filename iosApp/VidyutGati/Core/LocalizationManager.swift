@@ -334,7 +334,7 @@ public struct LocalizedStringsCatalog {
     }
 
     private static let hindiStrings = UiStrings(
-        appTitle: "विद्युतगति (VidyutGati)",
+        appTitle: "ई-रिक्शा सारथी (E-Rickshaw Sarathi)",
         tabSeats: "सवारी",
         tabSoundbox: "आवाज़",
         tabKhata: "खाता",
@@ -394,7 +394,7 @@ public struct LocalizedStringsCatalog {
     )
 
     private static let hinglishStrings = UiStrings(
-        appTitle: "VidyutGati",
+        appTitle: "E-Rickshaw Sarathi",
         tabSeats: "Sawari",
         tabSoundbox: "Awaz Box",
         tabKhata: "Khata",
@@ -454,7 +454,7 @@ public struct LocalizedStringsCatalog {
     )
 
     private static let englishStrings = UiStrings(
-        appTitle: "VidyutGati",
+        appTitle: "E-Rickshaw Sarathi",
         tabSeats: "Seats",
         tabSoundbox: "Soundbox",
         tabKhata: "Ledger",
@@ -514,7 +514,7 @@ public struct LocalizedStringsCatalog {
     )
 
     private static let bengaliStrings = UiStrings(
-        appTitle: "বিদ্যুৎগতি (টোটো চালক)",
+        appTitle: "টোটো সারথি (Toto Sarathi)",
         tabSeats: "যাত্রী",
         tabSoundbox: "সাউন্ডবক্স",
         tabKhata: "খাতা",
@@ -574,7 +574,7 @@ public struct LocalizedStringsCatalog {
     )
 
     private static let punjabiStrings = UiStrings(
-        appTitle: "ਵਿਦਯੁਤਗਤੀ (ਰਿਕਸ਼ਾ ਸਾਰਥੀ)",
+        appTitle: "ਈ-ਰਿਕਸ਼ਾ ਸਾਰਥੀ (E-Rickshaw Sarathi)",
         tabSeats: "ਸਵਾਰੀ",
         tabSoundbox: "ਆਵਾਜ਼",
         tabKhata: "ਖਾਤਾ",
@@ -634,7 +634,7 @@ public struct LocalizedStringsCatalog {
     )
 
     private static let gujaratiStrings = UiStrings(
-        appTitle: "વિદ્યુતગતિ (રિક્ષા સારથી)",
+        appTitle: "ઈ-રિક્ષા સારથી (E-Rickshaw Sarathi)",
         tabSeats: "પેસેન્જર",
         tabSoundbox: "સાઉન્ડબોક્સ",
         tabKhata: "ખાતાવહી",
@@ -694,7 +694,7 @@ public struct LocalizedStringsCatalog {
     )
 
     private static let marathiStrings = UiStrings(
-        appTitle: "विद्युतगती (रिक्षा चालक)",
+        appTitle: "ई-रिक्षा सारथी (E-Rickshaw Sarathi)",
         tabSeats: "प्रवासी",
         tabSoundbox: "आवाज बॉक्स",
         tabKhata: "खातेवही",
@@ -754,7 +754,7 @@ public struct LocalizedStringsCatalog {
     )
 
     private static let tamilStrings = UiStrings(
-        appTitle: "வித்யுத் கதி (ஆட்டோ)",
+        appTitle: "இ-ரிக்ஷா சாரதி (E-Rickshaw Sarathi)",
         tabSeats: "பயணிகள்",
         tabSoundbox: "சவுண்ட்பாக்ஸ்",
         tabKhata: "கணக்கு",
@@ -814,7 +814,7 @@ public struct LocalizedStringsCatalog {
     )
 
     private static let teluguStrings = UiStrings(
-        appTitle: "విద్యుత్‌గతి (రిక్షా సారథి)",
+        appTitle: "ఇ-రిక్షా సారథి (E-Rickshaw Sarathi)",
         tabSeats: "ప్రయాణికులు",
         tabSoundbox: "సౌండ్‌బాక్స్",
         tabKhata: "ఖాతా",

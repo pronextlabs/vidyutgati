@@ -13,8 +13,8 @@ android {
         applicationId = "com.vidyutgati.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 2
-        versionName = "1.0.1"
+        versionCode = 3
+        versionName = "1.1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -22,9 +22,24 @@ android {
         }
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("${rootDir}/keystore/erickshaw-sarathi-release.jks")
+            storePassword = System.getenv("KEYSTORE_PASSWORD") ?: "pronextlabs123"
+            keyAlias = System.getenv("KEY_ALIAS") ?: "erickshawsarathi"
+            keyPassword = System.getenv("KEY_PASSWORD") ?: "pronextlabs123"
+            enableV1Signing = true
+            enableV2Signing = true
+            enableV3Signing = true
+            enableV4Signing = false
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
+            isDebuggable = false
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -44,6 +59,7 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/*.version"
         }
     }
 }

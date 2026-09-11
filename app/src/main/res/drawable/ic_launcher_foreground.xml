@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- E-Rickshaw Silhouette Frame -->
+    <!-- Roof Canopy -->
+    <path
+        android:fillColor="#F8FAFC"
+        android:pathData="M32,37 C34,34 72,34 76,37 C77,38 77,41 75,42 L33,42 C31,41 31,38 32,37 Z" />
+    
+    <!-- Pillars & Windshield -->
+    <path
+        android:fillColor="#94A3B8"
+        android:pathData="M34,42 L39,58 L42,58 L37,42 Z" />
+    <path
+        android:fillColor="#94A3B8"
+        android:pathData="M73,42 L71,58 L74,58 L76,42 Z" />
+    <path
+        android:fillColor="#64748B"
+        android:pathData="M52,42 L52,58 L55,58 L55,42 Z" />
+
+    <!-- Passenger Cabin Seating Back -->
+    <path
+        android:fillColor="#38BDF8"
+        android:pathData="M43,48 L70,48 L69,57 L43,57 Z" />
+
+    <!-- Chassis Body Base -->
+    <path
+        android:fillColor="#10B981"
+        android:pathData="M36,58 L74,58 C76,58 77,60 76,62 L34,62 C33,60 34,58 36,58 Z" />
+
+    <!-- Front Wheel -->
+    <path
+        android:fillColor="#020617"
+        android:strokeColor="#94A3B8"
+        android:strokeWidth="1.5"
+        android:pathData="M40,68m-7,0a7,7 0 1,0 14,0a7,7 0 1,0 -14,0" />
+    <path
+        android:fillColor="#F59E0B"
+        android:pathData="M40,68m-2.5,0a2.5,2.5 0 1,0 5,0a2.5,2.5 0 1,0 -5,0" />
+
+    <!-- Rear Wheel -->
+    <path
+        android:fillColor="#020617"
+        android:strokeColor="#94A3B8"
+        android:strokeWidth="1.5"
+        android:pathData="M68,68m-7,0a7,7 0 1,0 14,0a7,7 0 1,0 -14,0" />
+    <path
+        android:fillColor="#F59E0B"
+        android:pathData="M68,68m-2.5,0a2.5,2.5 0 1,0 5,0a2.5,2.5 0 1,0 -5,0" />
+
+    <!-- Electric Lightning Bolt (Vidyut Accent) -->
+    <path
+        android:fillColor="#F59E0B"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1"
+        android:pathData="M56,31 L46,47 L53,47 L49,63 L62,45 L55,45 Z" />
+</vector>

@@ -1,17 +1,18 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/⚡%20VidyutGati-विद्युतगति-F59E0B?style=for-the-badge&labelColor=0A0D14" alt="VidyutGati Logo" />
+  <img src="https://img.shields.io/badge/🛺%20E--Rickshaw%20Sarathi-ई--रिक्शा%20सारथी-F59E0B?style=for-the-badge&labelColor=0A0D14" alt="E-Rickshaw Sarathi Logo" />
 </p>
 
-<h1 align="center">VidyutGati (विद्युतगति)</h1>
+<h1 align="center">E-Rickshaw Sarathi (ई-रिक्शा सारथी / টোটো সারথি)</h1>
 
 <p align="center">
-  <strong>The 100% Offline-First Smart Mobility & Daily Khata Companion for 2.4M+ E-Rickshaw Drivers across South Asia.</strong>
+  <strong>The 100% Offline-First Smart Mobility Cockpit, Digital Soundbox & Daily Khata Companion for 2.4M+ E-Rickshaw & Toto Drivers across South Asia.</strong>
 </p>
 
 <p align="center">
-  <a href="https://github.com/pronextlabs/vidyutgati/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/pronextlabs/vidyutgati/ci.yml?branch=master&style=flat-square&logo=github-actions&label=CI%20Build" alt="CI Status" /></a>
-  <a href="https://github.com/pronextlabs/vidyutgati/releases"><img src="https://img.shields.io/badge/Release-v1.0.1-F59E0B?style=flat-square&logo=github" alt="Release" /></a>
+  <a href="https://github.com/pronextlabs/vidyutgati/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/pronextlabs/vidyutgati/ci.yml?branch=main&style=flat-square&logo=github-actions&label=CI%20Build" alt="CI Status" /></a>
+  <a href="https://github.com/pronextlabs/vidyutgati/releases"><img src="https://img.shields.io/badge/Release-v1.1.1-F59E0B?style=flat-square&logo=github" alt="Release v1.1.1" /></a>
   <a href="https://developer.android.com/about/versions/15"><img src="https://img.shields.io/badge/Android-API%2035%20(Android%2015)-3DDC84?style=flat-square&logo=android" alt="Android 15" /></a>
+  <a href="https://source.android.com/security/apksigning"><img src="https://img.shields.io/badge/Signed-v1%20%7C%20v2%20%7C%20v3-10B981?style=flat-square&logo=google-play" alt="Play Protect Signed" /></a>
   <a href="https://developer.apple.com/swift/"><img src="https://img.shields.io/badge/iOS-16.0%2B%20(Swift%205.9)-000000?style=flat-square&logo=apple" alt="iOS" /></a>
   <a href="#-zero-cloud-telemetry"><img src="https://img.shields.io/badge/Data%20Privacy-100%25%20Offline%20First-10B981?style=flat-square" alt="Offline First" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License" /></a>
@@ -19,11 +20,11 @@
 
 ---
 
-## 🌟 Created by ProNextLabs
+## 🌟 Researched & Built by ProNextLabs
 
-**VidyutGati** is an open-source initiative researched, designed, and developed by **[ProNextLabs](https://github.com/pronextlabs)**. 
+**E-Rickshaw Sarathi** (codenamed *VidyutGati*) is an open-source initiative researched, designed, and developed by **[ProNextLabs](https://github.com/pronextlabs)**. 
 
-Our mission with VidyutGati is to deliver high-craft, hardware-eliminating software tailored directly to grassroots informal transit workers (*Sarathis*), eliminating monthly IoT rental fees, battery anxiety, and manual bookkeeping friction with zero telemetry or cloud lock-in.
+Our mission with E-Rickshaw Sarathi is to deliver high-craft, hardware-eliminating software tailored directly to grassroots informal transit workers (*Sarathis*), eliminating monthly IoT rental fees, battery anxiety, and manual bookkeeping friction with zero telemetry or cloud lock-in.
 
 ---
 
@@ -195,16 +196,17 @@ vidyutgati/
 ./gradlew testDebugUnitTest
 ```
 
-### Build Standalone Android APK
+### Build Production Signed APK (Direct Device Installation)
 ```bash
-./gradlew assembleDebug
-# Generated at: app/build/outputs/apk/debug/app-debug.apk
+./gradlew assembleRelease
+# Generated at: app/build/outputs/apk/release/app-release.apk
+# Signed with v1 (JAR), v2, and v3 schemes for seamless Google Play Protect compatibility
 ```
 
 ### Build Google Play Store Android App Bundle (AAB)
 ```bash
-./gradlew bundleDebug
-# Generated at: app/build/outputs/bundle/debug/app-debug.aab
+./gradlew bundleRelease
+# Generated at: app/build/outputs/bundle/release/app-release.aab
 ```
 
 ---
